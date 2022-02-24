@@ -46,8 +46,7 @@ typedef enum bootloader_state
     STATE_UPDATING,
 }bootloader_state ; 
 
-#define BL_ACK  0x00
-#define BL_NACK 0x01
+
 typedef enum
 {
     BL_status_ok = 0,
