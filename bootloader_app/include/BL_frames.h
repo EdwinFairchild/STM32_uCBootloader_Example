@@ -37,13 +37,13 @@ typedef struct __attribute__((packed))
  * Jump to User App:
  * 
  */
-frame_format_t (*bootloader_state_functions[2])(void);
+frame_format_t (*bootloader_state_functions[3])(void);
 
 typedef enum bootloader_state
 {
     STATE_IDLE = 0,
-    STATE_PARSING ,
-    STATE_UPDATING = BL_START_UPDATE,
+    STATE_START_UPDATE ,
+    STATE_UPDATING,
 }bootloader_state ; 
 
 #define BL_ACK  0x00

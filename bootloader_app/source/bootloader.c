@@ -4,12 +4,6 @@
 // bootloader should have a config file with this value or be given thiat value etc
 #define USER_APP_LOCATION (0x8020000 + 4)
 
-typedef enum
-{
-	bl_idle_state = 0,
-	bl_update_state,
-} BL_State_t;
-BL_State_t bootloaderState = bl_idle_state;
 
 // buffer frame where we will store recevied bytes directly from UART
 uint8_t bytes_buff[sizeof(frame_format_t)] = {0};
@@ -34,54 +28,110 @@ static void print(char *msg, ...);
 static void jump_to_user_app(void);
 static void write_payload(void);
 static void erase_sector(void);
-static void parse_frame(void);
+static bool parse_frame(void);
+static void reset_recevied_frame(void);
+static void set_bl_state(bootloader_state state);
 // state function protoypes
-frame_format_t parsing_state_func(void);
+frame_format_t updating_state_func(void);
 frame_format_t idle_state_func(void);
+frame_format_t start_update_state_func(void);
 void bootloader_main(void)
 {
 	// TODO: fix :enable RX interrupt
 	USART2->CR1 |= USART_CR1_RXNEIE;
-
+    //erase_sector();
 	// initialize state functions
 	bootloader_state_functions[STATE_IDLE] = idle_state_func;
+	bootloader_state_functions[STATE_START_UPDATE] = start_update_state_func;
+	bootloader_state_functions[STATE_UPDATING] = updating_state_func;
 
-	erase_sector();
+	//initialize state again.... just to be sure
+	bootlaoder_current_state = STATE_IDLE;
 
 	while (1)
 	{
 		(*bootloader_state_functions[bootlaoder_current_state])();
-		
+
 		// HAL_GPIO_TogglePin(GPIOA, user_led_Pin);
-		// HAL_Delay(500);
+
 	}
 }
-frame_format_t parsing_state_func(void)
+frame_format_t start_update_state_func(void)
 {
+	//clear whatever needs to be cleared
+	parse = false; 
+	//this will have STATE_START_UPDATE frame
+	reset_recevied_frame();
+
+	set_bl_state(STATE_UPDATING); 
+
+	//send ack
+	print("o");
 }
-frame_format_t idle_state_func(void)
+frame_format_t updating_state_func(void)
 {
-	parse_frame();
-}
-static void parse_frame(void)
-{
-	if (parse)
+	//once we are updating for sure
+	//we can go ahead and erase the required sectors only once
+	static bool erased = false;
+	if(parse_frame())
 	{
-		//assemble a frame from bytes_buff 
-		memcpy(&receivedFrame, bytes_buff, sizeof(frame_format_t));
-		
-		//the type of frame we get will dictate what the next state should be
-		
-		if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME && receivedFrame.frame_id == BL_PAYLOAD)
+		if (receivedFrame.frame_id == BL_PAYLOAD)
 		{
+			if(!erased) //only do this once
+			{
+				erase_sector();
+				erased = true;
+			}
 			write_payload();
 		}
-		else if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME && receivedFrame.frame_id == BL_UPDATE_DONE)
+		else if (receivedFrame.frame_id == BL_UPDATE_DONE)
 		{
 			jump_to_user_app();
 		}
-		parse = false;
+
 	}
+
+}
+frame_format_t idle_state_func(void)
+{
+	if(parse_frame())
+	{
+
+		switch (receivedFrame.frame_id)
+		{
+			case BL_START_UPDATE:
+			set_bl_state(STATE_START_UPDATE); 
+			break;
+
+			//only states above are valie to switch out of idle state
+			default : 
+			set_bl_state(STATE_IDLE); 
+		}
+	}
+}
+static bool parse_frame(void)
+{
+	//checks if we have a frame to parse
+	if (parse)
+	{
+		
+		// assemble a frame from bytes_buff
+		memcpy(&receivedFrame, bytes_buff, sizeof(frame_format_t));
+
+		// the type of frame we get will dictate what the next state should be
+		if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME)
+		{
+			//TODO: check CRC
+			//if frame is valid 
+			return true;
+			
+		}		
+	}
+	return false;
+}
+static void set_bl_state(bootloader_state state)
+{
+	bootlaoder_current_state = state; 	
 }
 static void write_payload(void)
 {
@@ -94,6 +144,20 @@ static void write_payload(void)
 		start_address += 4;
 	}
 	HAL_FLASH_Unlock();
+	//clear receivedFrame
+	receivedFrame.start_of_frame = 0;
+	receivedFrame.frame_id = 0;
+	receivedFrame.payload_len = 0;
+	receivedFrame.crc32 = 0;
+	receivedFrame.end_of_frame = 0;
+	for(int i = 0 ; i< 16;i++)
+	{
+		receivedFrame.payload[i] = 0;
+	}
+	//TODO: read back the data and check crc
+
+	//this print will change to be an ack once crc read checks out ok
+	parse = false;
 	print("o");
 
 	//	HAL_FLASH_Lock();
@@ -104,7 +168,18 @@ static void jump_to_user_app(void)
 	void (*user_app_reset_handler)(void) = (void *)(*((uint32_t *)(USER_APP_LOCATION)));
 	user_app_reset_handler();
 }
-
+static void reset_recevied_frame(void)
+{
+	receivedFrame.start_of_frame = 0;
+	receivedFrame.frame_id = 0;
+	receivedFrame.payload_len = 0;
+	receivedFrame.crc32 = 0;
+	receivedFrame.end_of_frame = 0;
+	for(int i = 0 ; i< 16;i++)
+	{
+		receivedFrame.payload[i] = 0;
+	}
+}
 static void print(char *msg, ...)
 {
 	char buff[250];
@@ -138,10 +213,6 @@ void bootloader_USART2_callback(uint8_t data)
 	}
 	// USART2->DR = data; //echo the data
 	//  HAL_GPIO_TogglePin(GPIOA, user_led_Pin);
-}
-void set_bl_state(BL_State_t state)
-{
-	bootloaderState = state;
 }
 
 // TODO:  abstract sector erasing based user app memory locationa and size
