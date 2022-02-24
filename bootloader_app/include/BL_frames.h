@@ -29,6 +29,22 @@ typedef struct __attribute__((packed))
 
 }frame_format_t;
 
+/**
+ * @brief Bootlaoder States
+ * 
+ * Idle:
+ * Waiting For Next Firmware PAcket:
+ * Jump to User App:
+ * 
+ */
+frame_format_t (*bootloader_state_functions[2])(void);
+
+typedef enum bootloader_state
+{
+    STATE_IDLE = 0,
+    STATE_PARSING ,
+    STATE_UPDATING = BL_START_UPDATE,
+}bootloader_state ; 
 
 #define BL_ACK  0x00
 #define BL_NACK 0x01

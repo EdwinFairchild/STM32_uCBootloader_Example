@@ -1,6 +1,10 @@
-bootloader.c:30:6:bootloader_main	48	static
-bootloader.c:92:13:write_payload	16	static
-bootloader.c:108:13:jump_to_user_app	16	static
-bootloader.c:114:13:print	272	static
-bootloader.c:132:6:bootloader_USART2_callback	16	static
-bootloader.c:148:6:set_bl_state	16	static
+bootloader.c:41:6:bootloader_main	48	static
+bootloader.c:59:16:parsing_state_func	16	static
+bootloader.c:62:16:idle_state_func	16	static
+bootloader.c:66:13:parse_frame	24	static
+bootloader.c:86:13:write_payload	16	static
+bootloader.c:102:13:jump_to_user_app	16	static
+bootloader.c:108:13:print	272	static
+bootloader.c:126:6:bootloader_USART2_callback	16	static
+bootloader.c:142:6:set_bl_state	16	static
+bootloader.c:148:6:erase_sector	32	static

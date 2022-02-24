@@ -9,16 +9,22 @@ typedef enum
 	bl_idle_state = 0,
 	bl_update_state,
 } BL_State_t;
-BL_State_t BootLoaderState = bl_idle_state;
+BL_State_t bootloaderState = bl_idle_state;
 
+// buffer frame where we will store recevied bytes directly from UART
+uint8_t bytes_buff[sizeof(frame_format_t)] = {0};
+// frame we will assemble from received bytes
 frame_format_t receivedFrame;
 uint8_t bytes_received_count = 0;
-uint8_t bytes_buff[sizeof(frame_format_t)] = {0};
-
+// TODO: should this be sent by the cmoputer app?
+// let the user chose where the firmware will decide?
+// however the binary feel needs to have the propper
+// vector table offset...so maybe not
 uint32_t start_address = 0x8020000;
 uint32_t blockNum = 0;
+bootloader_state bootlaoder_current_state = STATE_IDLE;
+
 // TODO:
-// make this cleaner
 bool parse = false;
 // TODO:
 // bootloader should  have no knowledge of this, atleast not explicitly
@@ -27,68 +33,56 @@ extern UART_HandleTypeDef huart2;
 static void print(char *msg, ...);
 static void jump_to_user_app(void);
 static void write_payload(void);
+static void erase_sector(void);
+static void parse_frame(void);
+// state function protoypes
+frame_format_t parsing_state_func(void);
+frame_format_t idle_state_func(void);
 void bootloader_main(void)
 {
-
+	// TODO: fix :enable RX interrupt
 	USART2->CR1 |= USART_CR1_RXNEIE;
-	// print("ok");
-	// print("%d\r\n", sizeof(frame_format_t));
-	// this works
-	//  FLASH_EraseInitTypeDef erase;
-	//  erase.NbSectors = 1;
-	//  erase.Sector = FLASH_SECTOR_7;
-	//  erase.VoltageRange = FLASH_VOLTAGE_RANGE_3;
-	//  uint32_t err = 0;
-	//  uint32_t data = 0xf2f3f4f5;
-	//  HAL_FLASH_Unlock();
-	//  HAL_FLASHEx_Erase(&erase, &err);
-	//  HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,0x08060000,data);
-	//  HAL_FLASH_Lock();
 
-	// erase
-	static bool erased = false;
-	// only erase once app will fit in one sector
-	// TODO: handle multiple sectors
-	if (!erased)
-	{
-		FLASH_EraseInitTypeDef erase;
-		erase.NbSectors = 1;
-		erase.Sector = FLASH_SECTOR_5;
-		erase.VoltageRange = FLASH_VOLTAGE_RANGE_3;
-		uint32_t err = 0;
+	// initialize state functions
+	bootloader_state_functions[STATE_IDLE] = idle_state_func;
 
-		HAL_FLASH_Unlock();
-		HAL_FLASHEx_Erase(&erase, &err);
-		HAL_FLASH_Lock();
-		erased = true;
-	}
+	erase_sector();
 
-	// jump_to_user_app();
 	while (1)
 	{
-
-		if (parse)
-		{
-			memcpy(&receivedFrame, bytes_buff, sizeof(frame_format_t));
-
-			parse = false;
-			if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME && receivedFrame.frame_id == BL_PAYLOAD)
-			{
-
-				write_payload();
-			}
-			else if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME && receivedFrame.frame_id == BL_UPDATE_DONE)
-			{
-				jump_to_user_app();
-			}
-
-			parse = false;
-		}
+		(*bootloader_state_functions[bootlaoder_current_state])();
+		
 		// HAL_GPIO_TogglePin(GPIOA, user_led_Pin);
 		// HAL_Delay(500);
 	}
 }
-
+frame_format_t parsing_state_func(void)
+{
+}
+frame_format_t idle_state_func(void)
+{
+	parse_frame();
+}
+static void parse_frame(void)
+{
+	if (parse)
+	{
+		//assemble a frame from bytes_buff 
+		memcpy(&receivedFrame, bytes_buff, sizeof(frame_format_t));
+		
+		//the type of frame we get will dictate what the next state should be
+		
+		if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME && receivedFrame.frame_id == BL_PAYLOAD)
+		{
+			write_payload();
+		}
+		else if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME && receivedFrame.frame_id == BL_UPDATE_DONE)
+		{
+			jump_to_user_app();
+		}
+		parse = false;
+	}
+}
 static void write_payload(void)
 {
 
@@ -147,5 +141,20 @@ void bootloader_USART2_callback(uint8_t data)
 }
 void set_bl_state(BL_State_t state)
 {
-	BootLoaderState = state;
+	bootloaderState = state;
+}
+
+// TODO:  abstract sector erasing based user app memory locationa and size
+void erase_sector(void)
+{
+
+	FLASH_EraseInitTypeDef erase;
+	erase.NbSectors = 1;
+	erase.Sector = FLASH_SECTOR_5;
+	erase.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+	uint32_t err = 0;
+
+	HAL_FLASH_Unlock();
+	HAL_FLASHEx_Erase(&erase, &err);
+	HAL_FLASH_Lock();
 }
