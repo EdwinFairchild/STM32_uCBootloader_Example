@@ -26,5 +26,6 @@
 
 //prototypes
 void bootloader_main(void);
+void bootloaderInit(void);
 void bootloader_USART2_callback(uint8_t data);
 #endif

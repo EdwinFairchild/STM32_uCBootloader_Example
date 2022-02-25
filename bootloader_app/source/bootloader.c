@@ -9,6 +9,8 @@
 uint8_t bytes_buff[sizeof(frame_format_t)] = {0};
 // frame we will assemble from received bytes
 frame_format_t receivedFrame;
+frame_format_t ackFrame;
+frame_format_t nackFrame;
 uint8_t bytes_received_count = 0;
 // TODO: should this be sent by the cmoputer app?
 // let the user chose where the firmware will decide?
@@ -31,6 +33,8 @@ static void erase_sector(void);
 static bool parse_frame(void);
 static void reset_recevied_frame(void);
 static void set_bl_state(bootloader_state state);
+static void sendFrame(frame_format_t *frame);
+static void uart_send_data(uint8_t *data, uint16_t len);
 // state function protoypes
 frame_format_t updating_state_func(void);
 frame_format_t idle_state_func(void);
@@ -56,9 +60,43 @@ void bootloader_main(void)
 
 	}
 }
+void bootloaderInit(void)
+{
+	//create the ACK frame
+	ackFrame.start_of_frame = 0x45444459;
+	ackFrame.frame_id = 0x45634AED;
+	ackFrame.payload_len  = (uint16_t)65535;
+	ackFrame.crc32 = 0xffffffff; //TODO:
+	ackFrame.end_of_frame = 0x46414952; 
+	for(int i = 0 ; i < PAYLOAD_LEN ; i++)
+	{
+		ackFrame.payload[i] = i; 
+	}
+
+	//create the NACK frame
+	nackFrame.start_of_frame = 0x45444459;
+	nackFrame.frame_id = 0x45634AED;
+	nackFrame.payload_len  = (uint16_t)65535;
+	nackFrame.crc32 = 0xffffffff; //TODO:
+	nackFrame.end_of_frame = 0x46414952; 
+	for(int i = 0 ; i < PAYLOAD_LEN ; i++)
+	{
+		nackFrame.payload[i] = i; 
+	}
+
+	
+
+}
+static void sendFrame(frame_format_t *frame)
+{
+	uint8_t *temp = (uint8_t *)frame;
+	uart_send_data(temp,sizeof(frame_format_t));
+
+}
 frame_format_t start_update_state_func(void)
 {
-	//clear whatever needs to be cleared
+	//parse should be false now because once we leave here it will go to a different state
+	//that will attempt to parse this frame which is not relevant to that state.
 	parse = false; 
 	//this will have STATE_START_UPDATE frame
 	reset_recevied_frame();
@@ -67,6 +105,7 @@ frame_format_t start_update_state_func(void)
 
 	//send ack
 	print("o");
+	return ackFrame;
 }
 frame_format_t updating_state_func(void)
 {
@@ -91,6 +130,8 @@ frame_format_t updating_state_func(void)
 
 	}
 
+	return ackFrame;
+
 }
 frame_format_t idle_state_func(void)
 {
@@ -108,6 +149,8 @@ frame_format_t idle_state_func(void)
 			set_bl_state(STATE_IDLE); 
 		}
 	}
+
+	return ackFrame ;
 }
 static bool parse_frame(void)
 {
@@ -144,16 +187,8 @@ static void write_payload(void)
 		start_address += 4;
 	}
 	HAL_FLASH_Unlock();
-	//clear receivedFrame
-	receivedFrame.start_of_frame = 0;
-	receivedFrame.frame_id = 0;
-	receivedFrame.payload_len = 0;
-	receivedFrame.crc32 = 0;
-	receivedFrame.end_of_frame = 0;
-	for(int i = 0 ; i< 16;i++)
-	{
-		receivedFrame.payload[i] = 0;
-	}
+	//clear receivedFrame for next packet 
+	reset_recevied_frame();
 	//TODO: read back the data and check crc
 
 	//this print will change to be an ack once crc read checks out ok
@@ -228,4 +263,16 @@ void erase_sector(void)
 	HAL_FLASH_Unlock();
 	HAL_FLASHEx_Erase(&erase, &err);
 	HAL_FLASH_Lock();
+}
+static void uart_send_data(uint8_t *data, uint16_t len)
+{
+	for (int i = 0; i < len; i++)
+	{
+		USART2->DR = data[i];
+		while (!(USART2->SR & USART_SR_TXE))
+			;
+	}
+
+	while (!(USART2->SR & USART_SR_TC))
+		;
 }

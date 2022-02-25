@@ -18,12 +18,15 @@
 #define BL_START_UPDATE 0xBA5EBA11
 #define BL_PAYLOAD      0xDEADBEEF
 #define BL_UPDATE_DONE  0xDEADDADE
+#define BL_ACK_FRAME    0x45634AED
+
+#define PAYLOAD_LEN 16
 typedef struct __attribute__((packed))
 {
     uint32_t start_of_frame;
     uint32_t frame_id;
     uint16_t payload_len;
-    uint8_t payload[16];
+    uint8_t payload[PAYLOAD_LEN];
     uint32_t crc32; 
     uint32_t  end_of_frame;
 
