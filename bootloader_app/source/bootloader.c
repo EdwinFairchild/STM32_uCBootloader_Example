@@ -41,6 +41,7 @@ frame_format_t idle_state_func(void);
 frame_format_t start_update_state_func(void);
 void bootloader_main(void)
 {
+	bootloaderInit();
 	// TODO: fix :enable RX interrupt
 	USART2->CR1 |= USART_CR1_RXNEIE;
     //erase_sector();
@@ -87,17 +88,16 @@ void bootloaderInit(void)
 	
 
 }
+uint8_t *temp = NULL;
 static void sendFrame(frame_format_t *frame)
 {
-	uint8_t *temp = (uint8_t *)frame;
+	temp = (uint8_t *)frame;
 	uart_send_data(temp,sizeof(frame_format_t));
 
 }
 frame_format_t start_update_state_func(void)
 {
-	//parse should be false now because once we leave here it will go to a different state
-	//that will attempt to parse this frame which is not relevant to that state.
-	parse = false; 
+
 	//this will have STATE_START_UPDATE frame
 	reset_recevied_frame();
 
@@ -122,6 +122,9 @@ frame_format_t updating_state_func(void)
 				erased = true;
 			}
 			write_payload();
+			//reser received frame 
+
+			//send ack frame
 		}
 		else if (receivedFrame.frame_id == BL_UPDATE_DONE)
 		{
@@ -142,11 +145,15 @@ frame_format_t idle_state_func(void)
 		{
 			case BL_START_UPDATE:
 			set_bl_state(STATE_START_UPDATE); 
+			//sendFrame(&ackFrame);
+			reset_recevied_frame();
 			break;
 
-			//only states above are valie to switch out of idle state
+			//only states above are valid to switch out of idle state
 			default : 
 			set_bl_state(STATE_IDLE); 
+			reset_recevied_frame();
+
 		}
 	}
 
@@ -157,10 +164,11 @@ static bool parse_frame(void)
 	//checks if we have a frame to parse
 	if (parse)
 	{
-		
+		parse = false;
 		// assemble a frame from bytes_buff
 		memcpy(&receivedFrame, bytes_buff, sizeof(frame_format_t));
-
+		//clear bytes buffer
+		memset(bytes_buff , 0, sizeof(frame_format_t));
 		// the type of frame we get will dictate what the next state should be
 		if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME)
 		{
@@ -192,7 +200,7 @@ static void write_payload(void)
 	//TODO: read back the data and check crc
 
 	//this print will change to be an ack once crc read checks out ok
-	parse = false;
+
 	print("o");
 
 	//	HAL_FLASH_Lock();
