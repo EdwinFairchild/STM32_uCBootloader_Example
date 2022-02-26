@@ -63,22 +63,22 @@ void bootloader_main(void)
 void bootloaderInit(void)
 {
 	// create the ACK frame
-	ackFrame.start_of_frame = 0x45444459;
-	ackFrame.frame_id = 0x45634AED;
+	ackFrame.start_of_frame = BL_START_OF_FRAME;
+	ackFrame.frame_id = BL_ACK_FRAME;
 	ackFrame.payload_len = (uint16_t)65535;
 	ackFrame.crc32 = 0xffffffff; // TODO:
-	ackFrame.end_of_frame = 0x46414952;
+	ackFrame.end_of_frame = BL_END_OF_FRAME;
 	for (int i = 0; i < PAYLOAD_LEN; i++)
 	{
 		ackFrame.payload[i] = i;
 	}
 
 	// create the NACK frame
-	nackFrame.start_of_frame = 0x45444459;
+	nackFrame.start_of_frame = BL_START_OF_FRAME;
 	nackFrame.frame_id = 0x45634AED;
 	nackFrame.payload_len = (uint16_t)65535;
 	nackFrame.crc32 = 0xffffffff; // TODO:
-	nackFrame.end_of_frame = 0x46414952;
+	nackFrame.end_of_frame = BL_END_OF_FRAME;
 	for (int i = 0; i < PAYLOAD_LEN; i++)
 	{
 		nackFrame.payload[i] = i;
