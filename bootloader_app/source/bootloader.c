@@ -4,7 +4,6 @@
 // bootloader should have a config file with this value or be given thiat value etc
 #define USER_APP_LOCATION (0x8020000 + 4)
 
-
 // buffer frame where we will store recevied bytes directly from UART
 uint8_t bytes_buff[sizeof(frame_format_t)] = {0};
 // frame we will assemble from received bytes
@@ -42,15 +41,16 @@ frame_format_t start_update_state_func(void);
 void bootloader_main(void)
 {
 	bootloaderInit();
+
 	// TODO: fix :enable RX interrupt
 	USART2->CR1 |= USART_CR1_RXNEIE;
-    //erase_sector();
-	// initialize state functions
+	// erase_sector();
+	//  initialize state functions
 	bootloader_state_functions[STATE_IDLE] = idle_state_func;
 	bootloader_state_functions[STATE_START_UPDATE] = start_update_state_func;
 	bootloader_state_functions[STATE_UPDATING] = updating_state_func;
 
-	//initialize state again.... just to be sure
+	// initialize state again.... just to be sure
 	bootlaoder_current_state = STATE_IDLE;
 
 	while (1)
@@ -58,131 +58,124 @@ void bootloader_main(void)
 		(*bootloader_state_functions[bootlaoder_current_state])();
 
 		// HAL_GPIO_TogglePin(GPIOA, user_led_Pin);
-
 	}
 }
 void bootloaderInit(void)
 {
-	//create the ACK frame
+	// create the ACK frame
 	ackFrame.start_of_frame = 0x45444459;
 	ackFrame.frame_id = 0x45634AED;
-	ackFrame.payload_len  = (uint16_t)65535;
-	ackFrame.crc32 = 0xffffffff; //TODO:
-	ackFrame.end_of_frame = 0x46414952; 
-	for(int i = 0 ; i < PAYLOAD_LEN ; i++)
+	ackFrame.payload_len = (uint16_t)65535;
+	ackFrame.crc32 = 0xffffffff; // TODO:
+	ackFrame.end_of_frame = 0x46414952;
+	for (int i = 0; i < PAYLOAD_LEN; i++)
 	{
-		ackFrame.payload[i] = i; 
+		ackFrame.payload[i] = i;
 	}
 
-	//create the NACK frame
+	// create the NACK frame
 	nackFrame.start_of_frame = 0x45444459;
 	nackFrame.frame_id = 0x45634AED;
-	nackFrame.payload_len  = (uint16_t)65535;
-	nackFrame.crc32 = 0xffffffff; //TODO:
-	nackFrame.end_of_frame = 0x46414952; 
-	for(int i = 0 ; i < PAYLOAD_LEN ; i++)
+	nackFrame.payload_len = (uint16_t)65535;
+	nackFrame.crc32 = 0xffffffff; // TODO:
+	nackFrame.end_of_frame = 0x46414952;
+	for (int i = 0; i < PAYLOAD_LEN; i++)
 	{
-		nackFrame.payload[i] = i; 
+		nackFrame.payload[i] = i;
 	}
-
-	
-
 }
 uint8_t *temp = NULL;
 static void sendFrame(frame_format_t *frame)
 {
 	temp = (uint8_t *)frame;
-	uart_send_data(temp,sizeof(frame_format_t));
-
+	uart_send_data(temp, sizeof(frame_format_t));
 }
 frame_format_t start_update_state_func(void)
 {
 
-	//this will have STATE_START_UPDATE frame
+	// this will have STATE_START_UPDATE frame
 	reset_recevied_frame();
 
-	set_bl_state(STATE_UPDATING); 
+	set_bl_state(STATE_UPDATING);
 
-	//send ack
-	print("o");
+	//TODO: send ack
+
+
 	return ackFrame;
 }
 frame_format_t updating_state_func(void)
 {
-	//once we are updating for sure
-	//we can go ahead and erase the required sectors only once
+	// once we are updating for sure
+	// we can go ahead and erase the required sectors only once
 	static bool erased = false;
-	if(parse_frame())
+	if (parse_frame())
 	{
 		if (receivedFrame.frame_id == BL_PAYLOAD)
 		{
-			if(!erased) //only do this once
+			if (!erased) // only do this once
 			{
 				erase_sector();
 				erased = true;
 			}
 			write_payload();
-			//reser received frame 
-
-			//send ack frame
+			// reset received frame
+			//reset_recevied_frame();
+			// send ack frame
+			sendFrame(&ackFrame);
 		}
 		else if (receivedFrame.frame_id == BL_UPDATE_DONE)
 		{
 			jump_to_user_app();
 		}
-
 	}
 
-	return ackFrame;
-
+	//return ackFrame;
 }
 frame_format_t idle_state_func(void)
 {
-	if(parse_frame())
+	if (parse_frame())
 	{
 
 		switch (receivedFrame.frame_id)
 		{
-			case BL_START_UPDATE:
-			set_bl_state(STATE_START_UPDATE); 
-			//sendFrame(&ackFrame);
+		case BL_START_UPDATE:
+			set_bl_state(STATE_UPDATING);
 			reset_recevied_frame();
+			sendFrame(&ackFrame);
 			break;
 
-			//only states above are valid to switch out of idle state
-			default : 
-			set_bl_state(STATE_IDLE); 
+		// only states above are valid to switch out of idle state
+		default:
+			set_bl_state(STATE_IDLE);
 			reset_recevied_frame();
-
 		}
 	}
 
-	return ackFrame ;
+	//return ackFrame;
 }
 static bool parse_frame(void)
 {
-	//checks if we have a frame to parse
+	// checks if we have a frame to parse
 	if (parse)
 	{
 		parse = false;
 		// assemble a frame from bytes_buff
 		memcpy(&receivedFrame, bytes_buff, sizeof(frame_format_t));
-		//clear bytes buffer
-		memset(bytes_buff , 0, sizeof(frame_format_t));
+		// clear bytes buffer
+		memset(bytes_buff, 0, sizeof(frame_format_t));
 		// the type of frame we get will dictate what the next state should be
 		if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME)
 		{
-			//TODO: check CRC
-			//if frame is valid 
+			// TODO: check CRC
+			// if frame is valid
 			return true;
-			
-		}		
+		}
 	}
 	return false;
 }
 static void set_bl_state(bootloader_state state)
 {
-	bootlaoder_current_state = state; 	
+	bootlaoder_current_state = state;
 }
 static void write_payload(void)
 {
@@ -195,13 +188,13 @@ static void write_payload(void)
 		start_address += 4;
 	}
 	HAL_FLASH_Unlock();
-	//clear receivedFrame for next packet 
+	// clear receivedFrame for next packet
 	reset_recevied_frame();
-	//TODO: read back the data and check crc
+	// TODO: read back the data and check crc
 
-	//this print will change to be an ack once crc read checks out ok
+	// this print will change to be an ack once crc read checks out ok
 
-	print("o");
+	//print("o");
 
 	//	HAL_FLASH_Lock();
 }
@@ -218,7 +211,7 @@ static void reset_recevied_frame(void)
 	receivedFrame.payload_len = 0;
 	receivedFrame.crc32 = 0;
 	receivedFrame.end_of_frame = 0;
-	for(int i = 0 ; i< 16;i++)
+	for (int i = 0; i < 16; i++)
 	{
 		receivedFrame.payload[i] = 0;
 	}
