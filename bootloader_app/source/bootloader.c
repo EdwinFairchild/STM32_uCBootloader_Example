@@ -52,11 +52,14 @@ void bootloader_main(void)
 
 	// initialize state again.... just to be sure
 	bootlaoder_current_state = STATE_IDLE;
-
+    uint32_t timenow = HAL_GetTick();
 	while (1)
 	{
 		(*bootloader_state_functions[bootlaoder_current_state])();
-
+        if((HAL_GetTick() - timenow) > 5000)
+        {
+        	jump_to_user_app();
+        }
 		// HAL_GPIO_TogglePin(GPIOA, user_led_Pin);
 	}
 }
@@ -254,7 +257,6 @@ void bootloader_USART2_callback(uint8_t data)
 // TODO:  abstract sector erasing based user app memory locationa and size
 void erase_sector(void)
 {
-
 	FLASH_EraseInitTypeDef erase;
 	erase.NbSectors = 1;
 	erase.Sector = FLASH_SECTOR_5;

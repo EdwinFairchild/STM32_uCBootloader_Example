@@ -11,15 +11,16 @@
 //makes it store in address lowest to high so the F is in lowest bye of the hex and R is 
 //at the highest byte
 
-#define BL_START_OF_FRAME  0x45444459 //EDDY : little endian
-#define BL_END_OF_FRAME    0x46414952 //FAIR : little endian
+#define BL_START_OF_FRAME  0x45444459 //EDDY 
+#define BL_END_OF_FRAME    0x46414952 //FAIR 
 
+#define BL_HEADER       0xFEEDEDDE
 #define BL_STATUS_CHECK 0x4b4b4b4b
 #define BL_START_UPDATE 0xBA5EBA11
 #define BL_PAYLOAD      0xDEADBEEF
 #define BL_UPDATE_DONE  0xDEADDADE
 #define BL_ACK_FRAME    0x45634AED
-
+#define BL_NACK_FRAME   0x43636AEA
 #define PAYLOAD_LEN 16
 typedef struct __attribute__((packed))
 {
@@ -31,6 +32,8 @@ typedef struct __attribute__((packed))
     uint32_t  end_of_frame;
 
 }frame_format_t;
+
+
 
 /**
  * @brief Bootlaoder States
