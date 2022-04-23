@@ -5,45 +5,45 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .isr_vector   000001c4  08000000  08000000  00010000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .text         000033a4  080001c4  080001c4  000101c4  2**2
+  1 .text         00003374  080001c4  080001c4  000101c4  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000018  08003568  08003568  00013568  2**2
+  2 .rodata       00000018  08003538  08003538  00013538  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08003580  08003580  00020010  2**0
+  3 .ARM.extab    00000000  08003550  08003550  00020010  2**0
                   CONTENTS
-  4 .ARM          00000008  08003580  08003580  00013580  2**2
+  4 .ARM          00000008  08003550  08003550  00013550  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  08003588  08003588  00020010  2**0
+  5 .preinit_array 00000000  08003558  08003558  00020010  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  08003588  08003588  00013588  2**2
+  6 .init_array   00000004  08003558  08003558  00013558  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .fini_array   00000004  0800358c  0800358c  0001358c  2**2
+  7 .fini_array   00000004  0800355c  0800355c  0001355c  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         00000010  20000000  08003590  00020000  2**2
+  8 .data         00000010  20000000  08003560  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00000170  20000010  080035a0  00020010  2**2
+  9 .bss          0000016c  20000010  08003570  00020010  2**2
                   ALLOC
- 10 ._user_heap_stack 00000400  20000180  080035a0  00020180  2**0
+ 10 ._user_heap_stack 00000404  2000017c  08003570  0002017c  2**0
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  00020010  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0000dd3a  00000000  00000000  00020040  2**0
+ 12 .debug_info   0000dd08  00000000  00000000  00020040  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 000024e8  00000000  00000000  0002dd7a  2**0
+ 13 .debug_abbrev 0000248c  00000000  00000000  0002dd48  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 000009a8  00000000  00000000  00030268  2**3
+ 14 .debug_aranges 000009a0  00000000  00000000  000301d8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_ranges 000008c0  00000000  00000000  00030c10  2**3
+ 15 .debug_ranges 000008b8  00000000  00000000  00030b78  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00021e76  00000000  00000000  000314d0  2**0
+ 16 .debug_macro  00021e34  00000000  00000000  00031430  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000d45d  00000000  00000000  00053346  2**0
+ 17 .debug_line   0000d446  00000000  00000000  00053264  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000c9171  00000000  00000000  000607a3  2**0
+ 18 .debug_str    000c914f  00000000  00000000  000606aa  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  00129914  2**0
+ 19 .comment      00000053  00000000  00000000  001297f9  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00002584  00000000  00000000  00129968  2**2
+ 20 .debug_frame  00002560  00000000  00000000  0012984c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -62,7 +62,7 @@ Disassembly of section .text:
  80001da:	bd10      	pop	{r4, pc}
  80001dc:	20000010 	.word	0x20000010
  80001e0:	00000000 	.word	0x00000000
- 80001e4:	08003550 	.word	0x08003550
+ 80001e4:	08003520 	.word	0x08003520
 
 080001e8 <frame_dummy>:
  80001e8:	b508      	push	{r3, lr}
@@ -74,7 +74,7 @@ Disassembly of section .text:
  80001f6:	bd08      	pop	{r3, pc}
  80001f8:	00000000 	.word	0x00000000
  80001fc:	20000014 	.word	0x20000014
- 8000200:	08003550 	.word	0x08003550
+ 8000200:	08003520 	.word	0x08003520
 
 08000204 <__aeabi_uldivmod>:
  8000204:	b953      	cbnz	r3, 800021c <__aeabi_uldivmod+0x18>
@@ -507,7 +507,7 @@ void SystemClock_Config(void)
  80005c6:	2234      	movs	r2, #52	; 0x34
  80005c8:	2100      	movs	r1, #0
  80005ca:	4618      	mov	r0, r3
- 80005cc:	f002 ffb8 	bl	8003540 <memset>
+ 80005cc:	f002 ffa0 	bl	8003510 <memset>
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
  80005d0:	f107 0308 	add.w	r3, r7, #8
  80005d4:	2200      	movs	r2, #0
@@ -893,13 +893,13 @@ void USART2_IRQHandler(void)
  800075c:	685b      	ldr	r3, [r3, #4]
  800075e:	b2db      	uxtb	r3, r3
  8000760:	4618      	mov	r0, r3
- 8000762:	f002 fe57 	bl	8003414 <bootloader_USART2_callback>
+ 8000762:	f002 fe49 	bl	80033f8 <bootloader_USART2_callback>
   /* USER CODE END USART2_IRQn 1 */
 }
  8000766:	bf00      	nop
  8000768:	bd80      	pop	{r7, pc}
  800076a:	bf00      	nop
- 800076c:	200000ac 	.word	0x200000ac
+ 800076c:	200000a8 	.word	0x200000a8
  8000770:	40004400 	.word	0x40004400
 
 08000774 <SystemInit>:
@@ -996,7 +996,7 @@ void MX_USART2_UART_Init(void)
  80007de:	bf00      	nop
  80007e0:	bd80      	pop	{r7, pc}
  80007e2:	bf00      	nop
- 80007e4:	200000ac 	.word	0x200000ac
+ 80007e4:	200000a8 	.word	0x200000a8
  80007e8:	40004400 	.word	0x40004400
 
 080007ec <MX_USART3_UART_Init>:
@@ -1061,7 +1061,7 @@ void MX_USART3_UART_Init(void)
  8000832:	bf00      	nop
  8000834:	bd80      	pop	{r7, pc}
  8000836:	bf00      	nop
- 8000838:	20000068 	.word	0x20000068
+ 8000838:	20000064 	.word	0x20000064
  800083c:	40004800 	.word	0x40004800
 
 08000840 <HAL_UART_MspInit>:
@@ -1295,7 +1295,7 @@ LoopFillZerobss:
  8000976:	f7ff fefd 	bl	8000774 <SystemInit>
 /* Call static constructors */
     bl __libc_init_array
- 800097a:	f002 fdbd 	bl	80034f8 <__libc_init_array>
+ 800097a:	f002 fda5 	bl	80034c8 <__libc_init_array>
 /* Call the application's entry point.*/
   bl  main
  800097e:	f7ff fe0d 	bl	800059c <main>
@@ -1308,11 +1308,11 @@ LoopFillZerobss:
   ldr r1, =_edata
  800098c:	20000010 	.word	0x20000010
   ldr r2, =_sidata
- 8000990:	08003590 	.word	0x08003590
+ 8000990:	08003560 	.word	0x08003560
   ldr r2, =_sbss
  8000994:	20000010 	.word	0x20000010
   ldr r4, =_ebss
- 8000998:	20000180 	.word	0x20000180
+ 8000998:	2000017c 	.word	0x2000017c
 
 0800099c <ADC_IRQHandler>:
  * @retval None       
@@ -1475,7 +1475,7 @@ __weak void HAL_IncTick(void)
  8000a60:	4770      	bx	lr
  8000a62:	bf00      	nop
  8000a64:	20000008 	.word	0x20000008
- 8000a68:	200000f0 	.word	0x200000f0
+ 8000a68:	200000ec 	.word	0x200000ec
 
 08000a6c <HAL_GetTick>:
   * @note This function is declared as __weak to be overwritten in case of other 
@@ -1495,7 +1495,7 @@ __weak uint32_t HAL_GetTick(void)
  8000a78:	f85d 7b04 	ldr.w	r7, [sp], #4
  8000a7c:	4770      	bx	lr
  8000a7e:	bf00      	nop
- 8000a80:	200000f0 	.word	0x200000f0
+ 8000a80:	200000ec 	.word	0x200000ec
 
 08000a84 <__NVIC_SetPriorityGrouping>:
            In case of a conflict between priority grouping and available
@@ -2231,7 +2231,7 @@ HAL_StatusTypeDef HAL_FLASH_Program(uint32_t TypeProgram, uint32_t Address, uint
  8000e66:	46bd      	mov	sp, r7
  8000e68:	bd80      	pop	{r7, pc}
  8000e6a:	bf00      	nop
- 8000e6c:	200000f4 	.word	0x200000f4
+ 8000e6c:	200000f0 	.word	0x200000f0
  8000e70:	40023c00 	.word	0x40023c00
 
 08000e74 <HAL_FLASH_Unlock>:
@@ -2419,7 +2419,7 @@ HAL_StatusTypeDef FLASH_WaitForLastOperation(uint32_t Timeout)
  8000f4a:	3710      	adds	r7, #16
  8000f4c:	46bd      	mov	sp, r7
  8000f4e:	bd80      	pop	{r7, pc}
- 8000f50:	200000f4 	.word	0x200000f4
+ 8000f50:	200000f0 	.word	0x200000f0
  8000f54:	40023c00 	.word	0x40023c00
 
 08000f58 <FLASH_Program_DoubleWord>:
@@ -2778,7 +2778,7 @@ static void FLASH_SetErrorCode(void)
  800114a:	f85d 7b04 	ldr.w	r7, [sp], #4
  800114e:	4770      	bx	lr
  8001150:	40023c00 	.word	0x40023c00
- 8001154:	200000f4 	.word	0x200000f4
+ 8001154:	200000f0 	.word	0x200000f0
 
 08001158 <HAL_FLASHEx_Erase>:
   *         (0xFFFFFFFFU means that all the sectors have been correctly erased)
@@ -2943,7 +2943,7 @@ HAL_StatusTypeDef HAL_FLASHEx_Erase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t
  800122a:	3710      	adds	r7, #16
  800122c:	46bd      	mov	sp, r7
  800122e:	bd80      	pop	{r7, pc}
- 8001230:	200000f4 	.word	0x200000f4
+ 8001230:	200000f0 	.word	0x200000f0
  8001234:	40023c00 	.word	0x40023c00
 
 08001238 <FLASH_MassErase>:
@@ -4152,7 +4152,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
  800194e:	bf00      	nop
  8001950:	40023c00 	.word	0x40023c00
  8001954:	40023800 	.word	0x40023800
- 8001958:	08003568 	.word	0x08003568
+ 8001958:	08003538 	.word	0x08003538
  800195c:	20000000 	.word	0x20000000
  8001960:	20000004 	.word	0x20000004
 
@@ -4200,7 +4200,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  8001998:	4618      	mov	r0, r3
  800199a:	bd80      	pop	{r7, pc}
  800199c:	40023800 	.word	0x40023800
- 80019a0:	08003578 	.word	0x08003578
+ 80019a0:	08003548 	.word	0x08003548
 
 080019a4 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -4226,7 +4226,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  80019c0:	4618      	mov	r0, r3
  80019c2:	bd80      	pop	{r7, pc}
  80019c4:	40023800 	.word	0x40023800
- 80019c8:	08003578 	.word	0x08003578
+ 80019c8:	08003548 	.word	0x08003548
 
 080019cc <HAL_RCC_GetSysClockFreq>:
   *
@@ -7528,339 +7528,334 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
  8002f38:	51eb851f 	.word	0x51eb851f
 
 08002f3c <bootloader_main>:
-// state function protoypes
-frame_format_t updating_state_func(void);
-frame_format_t idle_state_func(void);
-frame_format_t start_update_state_func(void);
+static void sendFrame(frame_format_t *frame);
+void erase_sector(void);
+static void write_payload(void);
+//-------------------------------------------------------------------
 void bootloader_main(void)
 {
  8002f3c:	b580      	push	{r7, lr}
  8002f3e:	b08c      	sub	sp, #48	; 0x30
  8002f40:	af00      	add	r7, sp, #0
-	bootloaderInit();
- 8002f42:	f000 f837 	bl	8002fb4 <bootloaderInit>
-
 	// TODO: fix :enable RX interrupt
 	USART2->CR1 |= USART_CR1_RXNEIE;
- 8002f46:	4b15      	ldr	r3, [pc, #84]	; (8002f9c <bootloader_main+0x60>)
- 8002f48:	68db      	ldr	r3, [r3, #12]
- 8002f4a:	4a14      	ldr	r2, [pc, #80]	; (8002f9c <bootloader_main+0x60>)
- 8002f4c:	f043 0320 	orr.w	r3, r3, #32
- 8002f50:	60d3      	str	r3, [r2, #12]
-	// erase_sector();
-	//  initialize state functions
+ 8002f42:	4b15      	ldr	r3, [pc, #84]	; (8002f98 <bootloader_main+0x5c>)
+ 8002f44:	68db      	ldr	r3, [r3, #12]
+ 8002f46:	4a14      	ldr	r2, [pc, #80]	; (8002f98 <bootloader_main+0x5c>)
+ 8002f48:	f043 0320 	orr.w	r3, r3, #32
+ 8002f4c:	60d3      	str	r3, [r2, #12]
+	bootloaderInit();
+ 8002f4e:	f000 f82d 	bl	8002fac <bootloaderInit>
+	uint32_t timeNow = HAL_GetTick(); //current timestamp
+ 8002f52:	f7fd fd8b 	bl	8000a6c <HAL_GetTick>
+ 8002f56:	62f8      	str	r0, [r7, #44]	; 0x2c
 	bootloader_state_functions[STATE_IDLE] = idle_state_func;
- 8002f52:	4b13      	ldr	r3, [pc, #76]	; (8002fa0 <bootloader_main+0x64>)
- 8002f54:	4a13      	ldr	r2, [pc, #76]	; (8002fa4 <bootloader_main+0x68>)
- 8002f56:	601a      	str	r2, [r3, #0]
-	bootloader_state_functions[STATE_START_UPDATE] = start_update_state_func;
- 8002f58:	4b11      	ldr	r3, [pc, #68]	; (8002fa0 <bootloader_main+0x64>)
- 8002f5a:	4a13      	ldr	r2, [pc, #76]	; (8002fa8 <bootloader_main+0x6c>)
- 8002f5c:	605a      	str	r2, [r3, #4]
+ 8002f58:	4b10      	ldr	r3, [pc, #64]	; (8002f9c <bootloader_main+0x60>)
+ 8002f5a:	4a11      	ldr	r2, [pc, #68]	; (8002fa0 <bootloader_main+0x64>)
+ 8002f5c:	601a      	str	r2, [r3, #0]
+	//bootloader_state_functions[STATE_START_UPDATE] = start_update_state_func;
 	bootloader_state_functions[STATE_UPDATING] = updating_state_func;
- 8002f5e:	4b10      	ldr	r3, [pc, #64]	; (8002fa0 <bootloader_main+0x64>)
- 8002f60:	4a12      	ldr	r2, [pc, #72]	; (8002fac <bootloader_main+0x70>)
+ 8002f5e:	4b0f      	ldr	r3, [pc, #60]	; (8002f9c <bootloader_main+0x60>)
+ 8002f60:	4a10      	ldr	r2, [pc, #64]	; (8002fa4 <bootloader_main+0x68>)
  8002f62:	609a      	str	r2, [r3, #8]
 
-	// initialize state again.... just to be sure
-	bootlaoder_current_state = STATE_IDLE;
- 8002f64:	4b12      	ldr	r3, [pc, #72]	; (8002fb0 <bootloader_main+0x74>)
- 8002f66:	2200      	movs	r2, #0
- 8002f68:	701a      	strb	r2, [r3, #0]
-    uint32_t timenow = HAL_GetTick();
- 8002f6a:	f7fd fd7f 	bl	8000a6c <HAL_GetTick>
- 8002f6e:	62f8      	str	r0, [r7, #44]	; 0x2c
-	while (1)
+	while(1)
 	{
-		(*bootloader_state_functions[bootlaoder_current_state])();
- 8002f70:	4b0f      	ldr	r3, [pc, #60]	; (8002fb0 <bootloader_main+0x74>)
- 8002f72:	781b      	ldrb	r3, [r3, #0]
- 8002f74:	461a      	mov	r2, r3
- 8002f76:	4b0a      	ldr	r3, [pc, #40]	; (8002fa0 <bootloader_main+0x64>)
- 8002f78:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 8002f7c:	463a      	mov	r2, r7
- 8002f7e:	4610      	mov	r0, r2
- 8002f80:	4798      	blx	r3
-        if((HAL_GetTick() - timenow) > 5000)
- 8002f82:	f7fd fd73 	bl	8000a6c <HAL_GetTick>
- 8002f86:	4602      	mov	r2, r0
- 8002f88:	6afb      	ldr	r3, [r7, #44]	; 0x2c
- 8002f8a:	1ad3      	subs	r3, r2, r3
- 8002f8c:	f241 3288 	movw	r2, #5000	; 0x1388
- 8002f90:	4293      	cmp	r3, r2
- 8002f92:	d9ed      	bls.n	8002f70 <bootloader_main+0x34>
+		(*bootloader_state_functions[bootloader_current_state])();
+ 8002f64:	4b10      	ldr	r3, [pc, #64]	; (8002fa8 <bootloader_main+0x6c>)
+ 8002f66:	781b      	ldrb	r3, [r3, #0]
+ 8002f68:	461a      	mov	r2, r3
+ 8002f6a:	4b0c      	ldr	r3, [pc, #48]	; (8002f9c <bootloader_main+0x60>)
+ 8002f6c:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 8002f70:	463a      	mov	r2, r7
+ 8002f72:	4610      	mov	r0, r2
+ 8002f74:	4798      	blx	r3
+        if(((HAL_GetTick() - timeNow) > 15000) && (bootloader_current_state == STATE_IDLE))
+ 8002f76:	f7fd fd79 	bl	8000a6c <HAL_GetTick>
+ 8002f7a:	4602      	mov	r2, r0
+ 8002f7c:	6afb      	ldr	r3, [r7, #44]	; 0x2c
+ 8002f7e:	1ad3      	subs	r3, r2, r3
+ 8002f80:	f643 2298 	movw	r2, #15000	; 0x3a98
+ 8002f84:	4293      	cmp	r3, r2
+ 8002f86:	d9ed      	bls.n	8002f64 <bootloader_main+0x28>
+ 8002f88:	4b07      	ldr	r3, [pc, #28]	; (8002fa8 <bootloader_main+0x6c>)
+ 8002f8a:	781b      	ldrb	r3, [r3, #0]
+ 8002f8c:	2b00      	cmp	r3, #0
+ 8002f8e:	d1e9      	bne.n	8002f64 <bootloader_main+0x28>
         {
         	jump_to_user_app();
- 8002f94:	f000 f9ea 	bl	800336c <jump_to_user_app>
-		(*bootloader_state_functions[bootlaoder_current_state])();
- 8002f98:	e7ea      	b.n	8002f70 <bootloader_main+0x34>
- 8002f9a:	bf00      	nop
- 8002f9c:	40004400 	.word	0x40004400
- 8002fa0:	2000005c 	.word	0x2000005c
- 8002fa4:	0800321d 	.word	0x0800321d
- 8002fa8:	08003161 	.word	0x08003161
- 8002fac:	080031b1 	.word	0x080031b1
- 8002fb0:	2000004f 	.word	0x2000004f
+ 8002f90:	f000 f9ca 	bl	8003328 <jump_to_user_app>
+		(*bootloader_state_functions[bootloader_current_state])();
+ 8002f94:	e7e6      	b.n	8002f64 <bootloader_main+0x28>
+ 8002f96:	bf00      	nop
+ 8002f98:	40004400 	.word	0x40004400
+ 8002f9c:	20000058 	.word	0x20000058
+ 8002fa0:	08003131 	.word	0x08003131
+ 8002fa4:	080031b1 	.word	0x080031b1
+ 8002fa8:	20000052 	.word	0x20000052
 
-08002fb4 <bootloaderInit>:
-        }
-		// HAL_GPIO_TogglePin(GPIOA, user_led_Pin);
+08002fac <bootloaderInit>:
+
 	}
 }
+//-------------------------------------------------------------------
 void bootloaderInit(void)
 {
- 8002fb4:	b480      	push	{r7}
- 8002fb6:	b083      	sub	sp, #12
- 8002fb8:	af00      	add	r7, sp, #0
+ 8002fac:	b480      	push	{r7}
+ 8002fae:	b083      	sub	sp, #12
+ 8002fb0:	af00      	add	r7, sp, #0
 	// create the ACK frame
 	ackFrame.start_of_frame = BL_START_OF_FRAME;
- 8002fba:	4b5d      	ldr	r3, [pc, #372]	; (8003130 <bootloaderInit+0x17c>)
+ 8002fb2:	4b5d      	ldr	r3, [pc, #372]	; (8003128 <bootloaderInit+0x17c>)
+ 8002fb4:	2200      	movs	r2, #0
+ 8002fb6:	f042 0259 	orr.w	r2, r2, #89	; 0x59
+ 8002fba:	701a      	strb	r2, [r3, #0]
  8002fbc:	2200      	movs	r2, #0
- 8002fbe:	f042 0259 	orr.w	r2, r2, #89	; 0x59
- 8002fc2:	701a      	strb	r2, [r3, #0]
+ 8002fbe:	f042 0244 	orr.w	r2, r2, #68	; 0x44
+ 8002fc2:	705a      	strb	r2, [r3, #1]
  8002fc4:	2200      	movs	r2, #0
  8002fc6:	f042 0244 	orr.w	r2, r2, #68	; 0x44
- 8002fca:	705a      	strb	r2, [r3, #1]
+ 8002fca:	709a      	strb	r2, [r3, #2]
  8002fcc:	2200      	movs	r2, #0
- 8002fce:	f042 0244 	orr.w	r2, r2, #68	; 0x44
- 8002fd2:	709a      	strb	r2, [r3, #2]
- 8002fd4:	2200      	movs	r2, #0
- 8002fd6:	f042 0245 	orr.w	r2, r2, #69	; 0x45
- 8002fda:	70da      	strb	r2, [r3, #3]
+ 8002fce:	f042 0245 	orr.w	r2, r2, #69	; 0x45
+ 8002fd2:	70da      	strb	r2, [r3, #3]
 	ackFrame.frame_id = BL_ACK_FRAME;
- 8002fdc:	4b54      	ldr	r3, [pc, #336]	; (8003130 <bootloaderInit+0x17c>)
+ 8002fd4:	4b54      	ldr	r3, [pc, #336]	; (8003128 <bootloaderInit+0x17c>)
+ 8002fd6:	2200      	movs	r2, #0
+ 8002fd8:	f062 0212 	orn	r2, r2, #18
+ 8002fdc:	711a      	strb	r2, [r3, #4]
  8002fde:	2200      	movs	r2, #0
- 8002fe0:	f062 0212 	orn	r2, r2, #18
- 8002fe4:	711a      	strb	r2, [r3, #4]
+ 8002fe0:	f042 024a 	orr.w	r2, r2, #74	; 0x4a
+ 8002fe4:	715a      	strb	r2, [r3, #5]
  8002fe6:	2200      	movs	r2, #0
- 8002fe8:	f042 024a 	orr.w	r2, r2, #74	; 0x4a
- 8002fec:	715a      	strb	r2, [r3, #5]
+ 8002fe8:	f042 0263 	orr.w	r2, r2, #99	; 0x63
+ 8002fec:	719a      	strb	r2, [r3, #6]
  8002fee:	2200      	movs	r2, #0
- 8002ff0:	f042 0263 	orr.w	r2, r2, #99	; 0x63
- 8002ff4:	719a      	strb	r2, [r3, #6]
- 8002ff6:	2200      	movs	r2, #0
- 8002ff8:	f042 0245 	orr.w	r2, r2, #69	; 0x45
- 8002ffc:	71da      	strb	r2, [r3, #7]
+ 8002ff0:	f042 0245 	orr.w	r2, r2, #69	; 0x45
+ 8002ff4:	71da      	strb	r2, [r3, #7]
 	ackFrame.payload_len = (uint16_t)65535;
- 8002ffe:	4b4c      	ldr	r3, [pc, #304]	; (8003130 <bootloaderInit+0x17c>)
- 8003000:	f04f 32ff 	mov.w	r2, #4294967295
- 8003004:	721a      	strb	r2, [r3, #8]
- 8003006:	f04f 32ff 	mov.w	r2, #4294967295
- 800300a:	725a      	strb	r2, [r3, #9]
+ 8002ff6:	4b4c      	ldr	r3, [pc, #304]	; (8003128 <bootloaderInit+0x17c>)
+ 8002ff8:	f04f 32ff 	mov.w	r2, #4294967295
+ 8002ffc:	721a      	strb	r2, [r3, #8]
+ 8002ffe:	f04f 32ff 	mov.w	r2, #4294967295
+ 8003002:	725a      	strb	r2, [r3, #9]
 	ackFrame.crc32 = 0xffffffff; // TODO:
- 800300c:	4b48      	ldr	r3, [pc, #288]	; (8003130 <bootloaderInit+0x17c>)
- 800300e:	f04f 32ff 	mov.w	r2, #4294967295
- 8003012:	769a      	strb	r2, [r3, #26]
- 8003014:	f04f 32ff 	mov.w	r2, #4294967295
- 8003018:	76da      	strb	r2, [r3, #27]
- 800301a:	f04f 32ff 	mov.w	r2, #4294967295
- 800301e:	771a      	strb	r2, [r3, #28]
- 8003020:	f04f 32ff 	mov.w	r2, #4294967295
- 8003024:	775a      	strb	r2, [r3, #29]
+ 8003004:	4b48      	ldr	r3, [pc, #288]	; (8003128 <bootloaderInit+0x17c>)
+ 8003006:	f04f 32ff 	mov.w	r2, #4294967295
+ 800300a:	769a      	strb	r2, [r3, #26]
+ 800300c:	f04f 32ff 	mov.w	r2, #4294967295
+ 8003010:	76da      	strb	r2, [r3, #27]
+ 8003012:	f04f 32ff 	mov.w	r2, #4294967295
+ 8003016:	771a      	strb	r2, [r3, #28]
+ 8003018:	f04f 32ff 	mov.w	r2, #4294967295
+ 800301c:	775a      	strb	r2, [r3, #29]
 	ackFrame.end_of_frame = BL_END_OF_FRAME;
- 8003026:	4b42      	ldr	r3, [pc, #264]	; (8003130 <bootloaderInit+0x17c>)
+ 800301e:	4b42      	ldr	r3, [pc, #264]	; (8003128 <bootloaderInit+0x17c>)
+ 8003020:	2200      	movs	r2, #0
+ 8003022:	f042 0252 	orr.w	r2, r2, #82	; 0x52
+ 8003026:	779a      	strb	r2, [r3, #30]
  8003028:	2200      	movs	r2, #0
- 800302a:	f042 0252 	orr.w	r2, r2, #82	; 0x52
- 800302e:	779a      	strb	r2, [r3, #30]
+ 800302a:	f042 0249 	orr.w	r2, r2, #73	; 0x49
+ 800302e:	77da      	strb	r2, [r3, #31]
  8003030:	2200      	movs	r2, #0
- 8003032:	f042 0249 	orr.w	r2, r2, #73	; 0x49
- 8003036:	77da      	strb	r2, [r3, #31]
- 8003038:	2200      	movs	r2, #0
- 800303a:	f042 0241 	orr.w	r2, r2, #65	; 0x41
- 800303e:	f883 2020 	strb.w	r2, [r3, #32]
- 8003042:	2200      	movs	r2, #0
- 8003044:	f042 0246 	orr.w	r2, r2, #70	; 0x46
- 8003048:	f883 2021 	strb.w	r2, [r3, #33]	; 0x21
+ 8003032:	f042 0241 	orr.w	r2, r2, #65	; 0x41
+ 8003036:	f883 2020 	strb.w	r2, [r3, #32]
+ 800303a:	2200      	movs	r2, #0
+ 800303c:	f042 0246 	orr.w	r2, r2, #70	; 0x46
+ 8003040:	f883 2021 	strb.w	r2, [r3, #33]	; 0x21
 	for (int i = 0; i < PAYLOAD_LEN; i++)
- 800304c:	2300      	movs	r3, #0
- 800304e:	607b      	str	r3, [r7, #4]
- 8003050:	e00a      	b.n	8003068 <bootloaderInit+0xb4>
+ 8003044:	2300      	movs	r3, #0
+ 8003046:	607b      	str	r3, [r7, #4]
+ 8003048:	e00a      	b.n	8003060 <bootloaderInit+0xb4>
 	{
 		ackFrame.payload[i] = i;
- 8003052:	687b      	ldr	r3, [r7, #4]
- 8003054:	b2d9      	uxtb	r1, r3
- 8003056:	4a36      	ldr	r2, [pc, #216]	; (8003130 <bootloaderInit+0x17c>)
- 8003058:	687b      	ldr	r3, [r7, #4]
- 800305a:	4413      	add	r3, r2
- 800305c:	330a      	adds	r3, #10
- 800305e:	460a      	mov	r2, r1
- 8003060:	701a      	strb	r2, [r3, #0]
+ 800304a:	687b      	ldr	r3, [r7, #4]
+ 800304c:	b2d9      	uxtb	r1, r3
+ 800304e:	4a36      	ldr	r2, [pc, #216]	; (8003128 <bootloaderInit+0x17c>)
+ 8003050:	687b      	ldr	r3, [r7, #4]
+ 8003052:	4413      	add	r3, r2
+ 8003054:	330a      	adds	r3, #10
+ 8003056:	460a      	mov	r2, r1
+ 8003058:	701a      	strb	r2, [r3, #0]
 	for (int i = 0; i < PAYLOAD_LEN; i++)
- 8003062:	687b      	ldr	r3, [r7, #4]
- 8003064:	3301      	adds	r3, #1
- 8003066:	607b      	str	r3, [r7, #4]
- 8003068:	687b      	ldr	r3, [r7, #4]
- 800306a:	2b0f      	cmp	r3, #15
- 800306c:	ddf1      	ble.n	8003052 <bootloaderInit+0x9e>
+ 800305a:	687b      	ldr	r3, [r7, #4]
+ 800305c:	3301      	adds	r3, #1
+ 800305e:	607b      	str	r3, [r7, #4]
+ 8003060:	687b      	ldr	r3, [r7, #4]
+ 8003062:	2b0f      	cmp	r3, #15
+ 8003064:	ddf1      	ble.n	800304a <bootloaderInit+0x9e>
 	}
 
 	// create the NACK frame
 	nackFrame.start_of_frame = BL_START_OF_FRAME;
- 800306e:	4b31      	ldr	r3, [pc, #196]	; (8003134 <bootloaderInit+0x180>)
+ 8003066:	4b31      	ldr	r3, [pc, #196]	; (800312c <bootloaderInit+0x180>)
+ 8003068:	2200      	movs	r2, #0
+ 800306a:	f042 0259 	orr.w	r2, r2, #89	; 0x59
+ 800306e:	701a      	strb	r2, [r3, #0]
  8003070:	2200      	movs	r2, #0
- 8003072:	f042 0259 	orr.w	r2, r2, #89	; 0x59
- 8003076:	701a      	strb	r2, [r3, #0]
+ 8003072:	f042 0244 	orr.w	r2, r2, #68	; 0x44
+ 8003076:	705a      	strb	r2, [r3, #1]
  8003078:	2200      	movs	r2, #0
  800307a:	f042 0244 	orr.w	r2, r2, #68	; 0x44
- 800307e:	705a      	strb	r2, [r3, #1]
+ 800307e:	709a      	strb	r2, [r3, #2]
  8003080:	2200      	movs	r2, #0
- 8003082:	f042 0244 	orr.w	r2, r2, #68	; 0x44
- 8003086:	709a      	strb	r2, [r3, #2]
- 8003088:	2200      	movs	r2, #0
- 800308a:	f042 0245 	orr.w	r2, r2, #69	; 0x45
- 800308e:	70da      	strb	r2, [r3, #3]
+ 8003082:	f042 0245 	orr.w	r2, r2, #69	; 0x45
+ 8003086:	70da      	strb	r2, [r3, #3]
 	nackFrame.frame_id = 0x45634AED;
- 8003090:	4b28      	ldr	r3, [pc, #160]	; (8003134 <bootloaderInit+0x180>)
+ 8003088:	4b28      	ldr	r3, [pc, #160]	; (800312c <bootloaderInit+0x180>)
+ 800308a:	2200      	movs	r2, #0
+ 800308c:	f062 0212 	orn	r2, r2, #18
+ 8003090:	711a      	strb	r2, [r3, #4]
  8003092:	2200      	movs	r2, #0
- 8003094:	f062 0212 	orn	r2, r2, #18
- 8003098:	711a      	strb	r2, [r3, #4]
+ 8003094:	f042 024a 	orr.w	r2, r2, #74	; 0x4a
+ 8003098:	715a      	strb	r2, [r3, #5]
  800309a:	2200      	movs	r2, #0
- 800309c:	f042 024a 	orr.w	r2, r2, #74	; 0x4a
- 80030a0:	715a      	strb	r2, [r3, #5]
+ 800309c:	f042 0263 	orr.w	r2, r2, #99	; 0x63
+ 80030a0:	719a      	strb	r2, [r3, #6]
  80030a2:	2200      	movs	r2, #0
- 80030a4:	f042 0263 	orr.w	r2, r2, #99	; 0x63
- 80030a8:	719a      	strb	r2, [r3, #6]
- 80030aa:	2200      	movs	r2, #0
- 80030ac:	f042 0245 	orr.w	r2, r2, #69	; 0x45
- 80030b0:	71da      	strb	r2, [r3, #7]
+ 80030a4:	f042 0245 	orr.w	r2, r2, #69	; 0x45
+ 80030a8:	71da      	strb	r2, [r3, #7]
 	nackFrame.payload_len = (uint16_t)65535;
- 80030b2:	4b20      	ldr	r3, [pc, #128]	; (8003134 <bootloaderInit+0x180>)
- 80030b4:	f04f 32ff 	mov.w	r2, #4294967295
- 80030b8:	721a      	strb	r2, [r3, #8]
- 80030ba:	f04f 32ff 	mov.w	r2, #4294967295
- 80030be:	725a      	strb	r2, [r3, #9]
+ 80030aa:	4b20      	ldr	r3, [pc, #128]	; (800312c <bootloaderInit+0x180>)
+ 80030ac:	f04f 32ff 	mov.w	r2, #4294967295
+ 80030b0:	721a      	strb	r2, [r3, #8]
+ 80030b2:	f04f 32ff 	mov.w	r2, #4294967295
+ 80030b6:	725a      	strb	r2, [r3, #9]
 	nackFrame.crc32 = 0xffffffff; // TODO:
- 80030c0:	4b1c      	ldr	r3, [pc, #112]	; (8003134 <bootloaderInit+0x180>)
- 80030c2:	f04f 32ff 	mov.w	r2, #4294967295
- 80030c6:	769a      	strb	r2, [r3, #26]
- 80030c8:	f04f 32ff 	mov.w	r2, #4294967295
- 80030cc:	76da      	strb	r2, [r3, #27]
- 80030ce:	f04f 32ff 	mov.w	r2, #4294967295
- 80030d2:	771a      	strb	r2, [r3, #28]
- 80030d4:	f04f 32ff 	mov.w	r2, #4294967295
- 80030d8:	775a      	strb	r2, [r3, #29]
+ 80030b8:	4b1c      	ldr	r3, [pc, #112]	; (800312c <bootloaderInit+0x180>)
+ 80030ba:	f04f 32ff 	mov.w	r2, #4294967295
+ 80030be:	769a      	strb	r2, [r3, #26]
+ 80030c0:	f04f 32ff 	mov.w	r2, #4294967295
+ 80030c4:	76da      	strb	r2, [r3, #27]
+ 80030c6:	f04f 32ff 	mov.w	r2, #4294967295
+ 80030ca:	771a      	strb	r2, [r3, #28]
+ 80030cc:	f04f 32ff 	mov.w	r2, #4294967295
+ 80030d0:	775a      	strb	r2, [r3, #29]
 	nackFrame.end_of_frame = BL_END_OF_FRAME;
- 80030da:	4b16      	ldr	r3, [pc, #88]	; (8003134 <bootloaderInit+0x180>)
+ 80030d2:	4b16      	ldr	r3, [pc, #88]	; (800312c <bootloaderInit+0x180>)
+ 80030d4:	2200      	movs	r2, #0
+ 80030d6:	f042 0252 	orr.w	r2, r2, #82	; 0x52
+ 80030da:	779a      	strb	r2, [r3, #30]
  80030dc:	2200      	movs	r2, #0
- 80030de:	f042 0252 	orr.w	r2, r2, #82	; 0x52
- 80030e2:	779a      	strb	r2, [r3, #30]
+ 80030de:	f042 0249 	orr.w	r2, r2, #73	; 0x49
+ 80030e2:	77da      	strb	r2, [r3, #31]
  80030e4:	2200      	movs	r2, #0
- 80030e6:	f042 0249 	orr.w	r2, r2, #73	; 0x49
- 80030ea:	77da      	strb	r2, [r3, #31]
- 80030ec:	2200      	movs	r2, #0
- 80030ee:	f042 0241 	orr.w	r2, r2, #65	; 0x41
- 80030f2:	f883 2020 	strb.w	r2, [r3, #32]
- 80030f6:	2200      	movs	r2, #0
- 80030f8:	f042 0246 	orr.w	r2, r2, #70	; 0x46
- 80030fc:	f883 2021 	strb.w	r2, [r3, #33]	; 0x21
+ 80030e6:	f042 0241 	orr.w	r2, r2, #65	; 0x41
+ 80030ea:	f883 2020 	strb.w	r2, [r3, #32]
+ 80030ee:	2200      	movs	r2, #0
+ 80030f0:	f042 0246 	orr.w	r2, r2, #70	; 0x46
+ 80030f4:	f883 2021 	strb.w	r2, [r3, #33]	; 0x21
 	for (int i = 0; i < PAYLOAD_LEN; i++)
- 8003100:	2300      	movs	r3, #0
- 8003102:	603b      	str	r3, [r7, #0]
- 8003104:	e00a      	b.n	800311c <bootloaderInit+0x168>
+ 80030f8:	2300      	movs	r3, #0
+ 80030fa:	603b      	str	r3, [r7, #0]
+ 80030fc:	e00a      	b.n	8003114 <bootloaderInit+0x168>
 	{
 		nackFrame.payload[i] = i;
- 8003106:	683b      	ldr	r3, [r7, #0]
- 8003108:	b2d9      	uxtb	r1, r3
- 800310a:	4a0a      	ldr	r2, [pc, #40]	; (8003134 <bootloaderInit+0x180>)
- 800310c:	683b      	ldr	r3, [r7, #0]
- 800310e:	4413      	add	r3, r2
- 8003110:	330a      	adds	r3, #10
- 8003112:	460a      	mov	r2, r1
- 8003114:	701a      	strb	r2, [r3, #0]
+ 80030fe:	683b      	ldr	r3, [r7, #0]
+ 8003100:	b2d9      	uxtb	r1, r3
+ 8003102:	4a0a      	ldr	r2, [pc, #40]	; (800312c <bootloaderInit+0x180>)
+ 8003104:	683b      	ldr	r3, [r7, #0]
+ 8003106:	4413      	add	r3, r2
+ 8003108:	330a      	adds	r3, #10
+ 800310a:	460a      	mov	r2, r1
+ 800310c:	701a      	strb	r2, [r3, #0]
 	for (int i = 0; i < PAYLOAD_LEN; i++)
- 8003116:	683b      	ldr	r3, [r7, #0]
- 8003118:	3301      	adds	r3, #1
- 800311a:	603b      	str	r3, [r7, #0]
- 800311c:	683b      	ldr	r3, [r7, #0]
- 800311e:	2b0f      	cmp	r3, #15
- 8003120:	ddf1      	ble.n	8003106 <bootloaderInit+0x152>
+ 800310e:	683b      	ldr	r3, [r7, #0]
+ 8003110:	3301      	adds	r3, #1
+ 8003112:	603b      	str	r3, [r7, #0]
+ 8003114:	683b      	ldr	r3, [r7, #0]
+ 8003116:	2b0f      	cmp	r3, #15
+ 8003118:	ddf1      	ble.n	80030fe <bootloaderInit+0x152>
 	}
 }
- 8003122:	bf00      	nop
- 8003124:	bf00      	nop
- 8003126:	370c      	adds	r7, #12
- 8003128:	46bd      	mov	sp, r7
- 800312a:	f85d 7b04 	ldr.w	r7, [sp], #4
- 800312e:	4770      	bx	lr
- 8003130:	2000015c 	.word	0x2000015c
- 8003134:	20000114 	.word	0x20000114
+ 800311a:	bf00      	nop
+ 800311c:	bf00      	nop
+ 800311e:	370c      	adds	r7, #12
+ 8003120:	46bd      	mov	sp, r7
+ 8003122:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8003126:	4770      	bx	lr
+ 8003128:	20000158 	.word	0x20000158
+ 800312c:	20000110 	.word	0x20000110
 
-08003138 <sendFrame>:
-uint8_t *temp = NULL;
-static void sendFrame(frame_format_t *frame)
+08003130 <idle_state_func>:
+//-------------------------------------------------------------------
+frame_format_t idle_state_func(void)
 {
- 8003138:	b580      	push	{r7, lr}
- 800313a:	b082      	sub	sp, #8
- 800313c:	af00      	add	r7, sp, #0
- 800313e:	6078      	str	r0, [r7, #4]
-	temp = (uint8_t *)frame;
- 8003140:	4a06      	ldr	r2, [pc, #24]	; (800315c <sendFrame+0x24>)
- 8003142:	687b      	ldr	r3, [r7, #4]
- 8003144:	6013      	str	r3, [r2, #0]
-	uart_send_data(temp, sizeof(frame_format_t));
- 8003146:	4b05      	ldr	r3, [pc, #20]	; (800315c <sendFrame+0x24>)
- 8003148:	681b      	ldr	r3, [r3, #0]
- 800314a:	2122      	movs	r1, #34	; 0x22
- 800314c:	4618      	mov	r0, r3
- 800314e:	f000 f9a5 	bl	800349c <uart_send_data>
-}
- 8003152:	bf00      	nop
- 8003154:	3708      	adds	r7, #8
- 8003156:	46bd      	mov	sp, r7
- 8003158:	bd80      	pop	{r7, pc}
- 800315a:	bf00      	nop
- 800315c:	20000054 	.word	0x20000054
+ 8003130:	b5f0      	push	{r4, r5, r6, r7, lr}
+ 8003132:	b083      	sub	sp, #12
+ 8003134:	af00      	add	r7, sp, #0
+ 8003136:	6078      	str	r0, [r7, #4]
+	if (parse_frame())
+ 8003138:	f000 f988 	bl	800344c <parse_frame>
+ 800313c:	4603      	mov	r3, r0
+ 800313e:	2b00      	cmp	r3, #0
+ 8003140:	d013      	beq.n	800316a <idle_state_func+0x3a>
+	{
 
-08003160 <start_update_state_func>:
-frame_format_t start_update_state_func(void)
-{
- 8003160:	b5f0      	push	{r4, r5, r6, r7, lr}
- 8003162:	b083      	sub	sp, #12
- 8003164:	af00      	add	r7, sp, #0
- 8003166:	6078      	str	r0, [r7, #4]
+		switch (receivedFrame.frame_id)
+ 8003142:	4b18      	ldr	r3, [pc, #96]	; (80031a4 <idle_state_func+0x74>)
+ 8003144:	685b      	ldr	r3, [r3, #4]
+ 8003146:	4a18      	ldr	r2, [pc, #96]	; (80031a8 <idle_state_func+0x78>)
+ 8003148:	4293      	cmp	r3, r2
+ 800314a:	d108      	bne.n	800315e <idle_state_func+0x2e>
+		{
+		case BL_START_UPDATE:
+			set_bl_state(STATE_UPDATING);
+ 800314c:	2002      	movs	r0, #2
+ 800314e:	f000 f8db 	bl	8003308 <set_bl_state>
+			reset_recevied_frame();
+ 8003152:	f000 f893 	bl	800327c <reset_recevied_frame>
+			sendFrame(&ackFrame);
+ 8003156:	4815      	ldr	r0, [pc, #84]	; (80031ac <idle_state_func+0x7c>)
+ 8003158:	f000 f93e 	bl	80033d8 <sendFrame>
+			break;
+ 800315c:	e006      	b.n	800316c <idle_state_func+0x3c>
 
-	// this will have STATE_START_UPDATE frame
-	reset_recevied_frame();
- 8003168:	f000 f90e 	bl	8003388 <reset_recevied_frame>
-
-	set_bl_state(STATE_UPDATING);
- 800316c:	2002      	movs	r0, #2
- 800316e:	f000 f8bd 	bl	80032ec <set_bl_state>
-
-	//TODO: send ack
-
-
+		// only states above are valid to switch out of idle state
+		default:
+			set_bl_state(STATE_IDLE);
+ 800315e:	2000      	movs	r0, #0
+ 8003160:	f000 f8d2 	bl	8003308 <set_bl_state>
+			reset_recevied_frame();
+ 8003164:	f000 f88a 	bl	800327c <reset_recevied_frame>
+ 8003168:	e000      	b.n	800316c <idle_state_func+0x3c>
+		}
+	}
+ 800316a:	bf00      	nop
+	//return (frame_format_t)0;
 	return ackFrame;
- 8003172:	687a      	ldr	r2, [r7, #4]
- 8003174:	4b0d      	ldr	r3, [pc, #52]	; (80031ac <start_update_state_func+0x4c>)
- 8003176:	4610      	mov	r0, r2
- 8003178:	f103 0420 	add.w	r4, r3, #32
- 800317c:	4602      	mov	r2, r0
- 800317e:	4619      	mov	r1, r3
- 8003180:	f8d1 c000 	ldr.w	ip, [r1]
- 8003184:	684e      	ldr	r6, [r1, #4]
- 8003186:	688d      	ldr	r5, [r1, #8]
- 8003188:	68c9      	ldr	r1, [r1, #12]
- 800318a:	f8c2 c000 	str.w	ip, [r2]
- 800318e:	6056      	str	r6, [r2, #4]
- 8003190:	6095      	str	r5, [r2, #8]
- 8003192:	60d1      	str	r1, [r2, #12]
- 8003194:	3310      	adds	r3, #16
- 8003196:	3010      	adds	r0, #16
- 8003198:	42a3      	cmp	r3, r4
- 800319a:	d1ef      	bne.n	800317c <start_update_state_func+0x1c>
- 800319c:	4602      	mov	r2, r0
- 800319e:	881b      	ldrh	r3, [r3, #0]
- 80031a0:	8013      	strh	r3, [r2, #0]
+ 800316c:	687a      	ldr	r2, [r7, #4]
+ 800316e:	4b0f      	ldr	r3, [pc, #60]	; (80031ac <idle_state_func+0x7c>)
+ 8003170:	4610      	mov	r0, r2
+ 8003172:	f103 0420 	add.w	r4, r3, #32
+ 8003176:	4602      	mov	r2, r0
+ 8003178:	4619      	mov	r1, r3
+ 800317a:	f8d1 c000 	ldr.w	ip, [r1]
+ 800317e:	684e      	ldr	r6, [r1, #4]
+ 8003180:	688d      	ldr	r5, [r1, #8]
+ 8003182:	68c9      	ldr	r1, [r1, #12]
+ 8003184:	f8c2 c000 	str.w	ip, [r2]
+ 8003188:	6056      	str	r6, [r2, #4]
+ 800318a:	6095      	str	r5, [r2, #8]
+ 800318c:	60d1      	str	r1, [r2, #12]
+ 800318e:	3310      	adds	r3, #16
+ 8003190:	3010      	adds	r0, #16
+ 8003192:	42a3      	cmp	r3, r4
+ 8003194:	d1ef      	bne.n	8003176 <idle_state_func+0x46>
+ 8003196:	4602      	mov	r2, r0
+ 8003198:	881b      	ldrh	r3, [r3, #0]
+ 800319a:	8013      	strh	r3, [r2, #0]
 }
- 80031a2:	6878      	ldr	r0, [r7, #4]
- 80031a4:	370c      	adds	r7, #12
- 80031a6:	46bd      	mov	sp, r7
- 80031a8:	bdf0      	pop	{r4, r5, r6, r7, pc}
- 80031aa:	bf00      	nop
- 80031ac:	2000015c 	.word	0x2000015c
+ 800319c:	6878      	ldr	r0, [r7, #4]
+ 800319e:	370c      	adds	r7, #12
+ 80031a0:	46bd      	mov	sp, r7
+ 80031a2:	bdf0      	pop	{r4, r5, r6, r7, pc}
+ 80031a4:	20000134 	.word	0x20000134
+ 80031a8:	ba5eba11 	.word	0xba5eba11
+ 80031ac:	20000158 	.word	0x20000158
 
 080031b0 <updating_state_func>:
+//-------------------------------------------------------------------
 frame_format_t updating_state_func(void)
 {
  80031b0:	b580      	push	{r7, lr}
@@ -7871,7 +7866,7 @@ frame_format_t updating_state_func(void)
 	// we can go ahead and erase the required sectors only once
 	static bool erased = false;
 	if (parse_frame())
- 80031b8:	f000 f85a 	bl	8003270 <parse_frame>
+ 80031b8:	f000 f948 	bl	800344c <parse_frame>
  80031bc:	4603      	mov	r3, r0
  80031be:	2b00      	cmp	r3, #0
  80031c0:	d01d      	beq.n	80031fe <updating_state_func+0x4e>
@@ -7892,20 +7887,20 @@ frame_format_t updating_state_func(void)
  80031d8:	d004      	beq.n	80031e4 <updating_state_func+0x34>
 			{
 				erase_sector();
- 80031da:	f000 f945 	bl	8003468 <erase_sector>
+ 80031da:	f000 f8b3 	bl	8003344 <erase_sector>
 				erased = true;
  80031de:	4b0c      	ldr	r3, [pc, #48]	; (8003210 <updating_state_func+0x60>)
  80031e0:	2201      	movs	r2, #1
  80031e2:	701a      	strb	r2, [r3, #0]
 			}
 			write_payload();
- 80031e4:	f000 f892 	bl	800330c <write_payload>
+ 80031e4:	f000 f81a 	bl	800321c <write_payload>
 			// reset received frame
 			//reset_recevied_frame();
 			// send ack frame
 			sendFrame(&ackFrame);
  80031e8:	480a      	ldr	r0, [pc, #40]	; (8003214 <updating_state_func+0x64>)
- 80031ea:	f7ff ffa5 	bl	8003138 <sendFrame>
+ 80031ea:	f000 f8f5 	bl	80033d8 <sendFrame>
  80031ee:	e006      	b.n	80031fe <updating_state_func+0x4e>
 		}
 		else if (receivedFrame.frame_id == BL_UPDATE_DONE)
@@ -7916,8 +7911,9 @@ frame_format_t updating_state_func(void)
  80031f8:	d101      	bne.n	80031fe <updating_state_func+0x4e>
 		{
 			jump_to_user_app();
- 80031fa:	f000 f8b7 	bl	800336c <jump_to_user_app>
-		}
+ 80031fa:	f000 f895 	bl	8003328 <jump_to_user_app>
+		// TODO: hanlde any unexpected frame
+		// erase sector again
 	}
 
 	//return ackFrame;
@@ -7927,537 +7923,509 @@ frame_format_t updating_state_func(void)
  8003202:	3708      	adds	r7, #8
  8003204:	46bd      	mov	sp, r7
  8003206:	bd80      	pop	{r7, pc}
- 8003208:	20000138 	.word	0x20000138
+ 8003208:	20000134 	.word	0x20000134
  800320c:	deadbeef 	.word	0xdeadbeef
- 8003210:	20000058 	.word	0x20000058
- 8003214:	2000015c 	.word	0x2000015c
+ 8003210:	20000053 	.word	0x20000053
+ 8003214:	20000158 	.word	0x20000158
  8003218:	deaddade 	.word	0xdeaddade
 
-0800321c <idle_state_func>:
-frame_format_t idle_state_func(void)
+0800321c <write_payload>:
+//-------------------------------------------------------------------
+static void write_payload(void)
 {
  800321c:	b580      	push	{r7, lr}
  800321e:	b082      	sub	sp, #8
  8003220:	af00      	add	r7, sp, #0
- 8003222:	6078      	str	r0, [r7, #4]
-	if (parse_frame())
- 8003224:	f000 f824 	bl	8003270 <parse_frame>
- 8003228:	4603      	mov	r3, r0
- 800322a:	2b00      	cmp	r3, #0
- 800322c:	d013      	beq.n	8003256 <idle_state_func+0x3a>
-	{
-
-		switch (receivedFrame.frame_id)
- 800322e:	4b0d      	ldr	r3, [pc, #52]	; (8003264 <idle_state_func+0x48>)
- 8003230:	685b      	ldr	r3, [r3, #4]
- 8003232:	4a0d      	ldr	r2, [pc, #52]	; (8003268 <idle_state_func+0x4c>)
- 8003234:	4293      	cmp	r3, r2
- 8003236:	d108      	bne.n	800324a <idle_state_func+0x2e>
-		{
-		case BL_START_UPDATE:
-			set_bl_state(STATE_UPDATING);
- 8003238:	2002      	movs	r0, #2
- 800323a:	f000 f857 	bl	80032ec <set_bl_state>
-			reset_recevied_frame();
- 800323e:	f000 f8a3 	bl	8003388 <reset_recevied_frame>
-			sendFrame(&ackFrame);
- 8003242:	480a      	ldr	r0, [pc, #40]	; (800326c <idle_state_func+0x50>)
- 8003244:	f7ff ff78 	bl	8003138 <sendFrame>
-			break;
- 8003248:	e006      	b.n	8003258 <idle_state_func+0x3c>
-
-		// only states above are valid to switch out of idle state
-		default:
-			set_bl_state(STATE_IDLE);
- 800324a:	2000      	movs	r0, #0
- 800324c:	f000 f84e 	bl	80032ec <set_bl_state>
-			reset_recevied_frame();
- 8003250:	f000 f89a 	bl	8003388 <reset_recevied_frame>
- 8003254:	e000      	b.n	8003258 <idle_state_func+0x3c>
-		}
-	}
- 8003256:	bf00      	nop
-
-	//return ackFrame;
-}
- 8003258:	bf00      	nop
- 800325a:	6878      	ldr	r0, [r7, #4]
- 800325c:	3708      	adds	r7, #8
- 800325e:	46bd      	mov	sp, r7
- 8003260:	bd80      	pop	{r7, pc}
- 8003262:	bf00      	nop
- 8003264:	20000138 	.word	0x20000138
- 8003268:	ba5eba11 	.word	0xba5eba11
- 800326c:	2000015c 	.word	0x2000015c
-
-08003270 <parse_frame>:
-static bool parse_frame(void)
-{
- 8003270:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 8003272:	af00      	add	r7, sp, #0
-	// checks if we have a frame to parse
-	if (parse)
- 8003274:	4b18      	ldr	r3, [pc, #96]	; (80032d8 <parse_frame+0x68>)
- 8003276:	781b      	ldrb	r3, [r3, #0]
- 8003278:	2b00      	cmp	r3, #0
- 800327a:	d02a      	beq.n	80032d2 <parse_frame+0x62>
-	{
-		parse = false;
- 800327c:	4b16      	ldr	r3, [pc, #88]	; (80032d8 <parse_frame+0x68>)
- 800327e:	2200      	movs	r2, #0
- 8003280:	701a      	strb	r2, [r3, #0]
-		// assemble a frame from bytes_buff
-		memcpy(&receivedFrame, bytes_buff, sizeof(frame_format_t));
- 8003282:	4b16      	ldr	r3, [pc, #88]	; (80032dc <parse_frame+0x6c>)
- 8003284:	4a16      	ldr	r2, [pc, #88]	; (80032e0 <parse_frame+0x70>)
- 8003286:	4614      	mov	r4, r2
- 8003288:	469c      	mov	ip, r3
- 800328a:	f104 0e20 	add.w	lr, r4, #32
- 800328e:	4665      	mov	r5, ip
- 8003290:	4626      	mov	r6, r4
- 8003292:	ce0f      	ldmia	r6!, {r0, r1, r2, r3}
- 8003294:	6028      	str	r0, [r5, #0]
- 8003296:	6069      	str	r1, [r5, #4]
- 8003298:	60aa      	str	r2, [r5, #8]
- 800329a:	60eb      	str	r3, [r5, #12]
- 800329c:	3410      	adds	r4, #16
- 800329e:	f10c 0c10 	add.w	ip, ip, #16
- 80032a2:	4574      	cmp	r4, lr
- 80032a4:	d1f3      	bne.n	800328e <parse_frame+0x1e>
- 80032a6:	4662      	mov	r2, ip
- 80032a8:	4623      	mov	r3, r4
- 80032aa:	881b      	ldrh	r3, [r3, #0]
- 80032ac:	8013      	strh	r3, [r2, #0]
-		// clear bytes buffer
-		memset(bytes_buff, 0, sizeof(frame_format_t));
- 80032ae:	2222      	movs	r2, #34	; 0x22
- 80032b0:	2100      	movs	r1, #0
- 80032b2:	480b      	ldr	r0, [pc, #44]	; (80032e0 <parse_frame+0x70>)
- 80032b4:	f000 f944 	bl	8003540 <memset>
-		// the type of frame we get will dictate what the next state should be
-		if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME)
- 80032b8:	4b08      	ldr	r3, [pc, #32]	; (80032dc <parse_frame+0x6c>)
- 80032ba:	681b      	ldr	r3, [r3, #0]
- 80032bc:	4a09      	ldr	r2, [pc, #36]	; (80032e4 <parse_frame+0x74>)
- 80032be:	4293      	cmp	r3, r2
- 80032c0:	d107      	bne.n	80032d2 <parse_frame+0x62>
- 80032c2:	4b06      	ldr	r3, [pc, #24]	; (80032dc <parse_frame+0x6c>)
- 80032c4:	f8d3 301e 	ldr.w	r3, [r3, #30]
- 80032c8:	4a07      	ldr	r2, [pc, #28]	; (80032e8 <parse_frame+0x78>)
- 80032ca:	4293      	cmp	r3, r2
- 80032cc:	d101      	bne.n	80032d2 <parse_frame+0x62>
-		{
-			// TODO: check CRC
-			// if frame is valid
-			return true;
- 80032ce:	2301      	movs	r3, #1
- 80032d0:	e000      	b.n	80032d4 <parse_frame+0x64>
-		}
-	}
-	return false;
- 80032d2:	2300      	movs	r3, #0
-}
- 80032d4:	4618      	mov	r0, r3
- 80032d6:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
- 80032d8:	20000050 	.word	0x20000050
- 80032dc:	20000138 	.word	0x20000138
- 80032e0:	2000002c 	.word	0x2000002c
- 80032e4:	45444459 	.word	0x45444459
- 80032e8:	46414952 	.word	0x46414952
-
-080032ec <set_bl_state>:
-static void set_bl_state(bootloader_state state)
-{
- 80032ec:	b480      	push	{r7}
- 80032ee:	b083      	sub	sp, #12
- 80032f0:	af00      	add	r7, sp, #0
- 80032f2:	4603      	mov	r3, r0
- 80032f4:	71fb      	strb	r3, [r7, #7]
-	bootlaoder_current_state = state;
- 80032f6:	4a04      	ldr	r2, [pc, #16]	; (8003308 <set_bl_state+0x1c>)
- 80032f8:	79fb      	ldrb	r3, [r7, #7]
- 80032fa:	7013      	strb	r3, [r2, #0]
-}
- 80032fc:	bf00      	nop
- 80032fe:	370c      	adds	r7, #12
- 8003300:	46bd      	mov	sp, r7
- 8003302:	f85d 7b04 	ldr.w	r7, [sp], #4
- 8003306:	4770      	bx	lr
- 8003308:	2000004f 	.word	0x2000004f
-
-0800330c <write_payload>:
-static void write_payload(void)
-{
- 800330c:	b580      	push	{r7, lr}
- 800330e:	b082      	sub	sp, #8
- 8003310:	af00      	add	r7, sp, #0
 
 	HAL_FLASH_Unlock();
- 8003312:	f7fd fdaf 	bl	8000e74 <HAL_FLASH_Unlock>
+ 8003222:	f7fd fe27 	bl	8000e74 <HAL_FLASH_Unlock>
+	// TODO: add this to a config.h file
 	for (int i = 0; i < 16; i += 4)
- 8003316:	2300      	movs	r3, #0
- 8003318:	607b      	str	r3, [r7, #4]
- 800331a:	e017      	b.n	800334c <write_payload+0x40>
+ 8003226:	2300      	movs	r3, #0
+ 8003228:	607b      	str	r3, [r7, #4]
+ 800322a:	e017      	b.n	800325c <write_payload+0x40>
 	{
 		uint32_t *val = (uint32_t *)&receivedFrame.payload[i];
- 800331c:	687b      	ldr	r3, [r7, #4]
- 800331e:	3308      	adds	r3, #8
- 8003320:	4a10      	ldr	r2, [pc, #64]	; (8003364 <write_payload+0x58>)
- 8003322:	4413      	add	r3, r2
- 8003324:	3302      	adds	r3, #2
- 8003326:	603b      	str	r3, [r7, #0]
+ 800322c:	687b      	ldr	r3, [r7, #4]
+ 800322e:	3308      	adds	r3, #8
+ 8003230:	4a10      	ldr	r2, [pc, #64]	; (8003274 <write_payload+0x58>)
+ 8003232:	4413      	add	r3, r2
+ 8003234:	3302      	adds	r3, #2
+ 8003236:	603b      	str	r3, [r7, #0]
 		HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, start_address, *val);
- 8003328:	4b0f      	ldr	r3, [pc, #60]	; (8003368 <write_payload+0x5c>)
- 800332a:	6819      	ldr	r1, [r3, #0]
- 800332c:	683b      	ldr	r3, [r7, #0]
- 800332e:	681b      	ldr	r3, [r3, #0]
- 8003330:	461a      	mov	r2, r3
- 8003332:	f04f 0300 	mov.w	r3, #0
- 8003336:	2002      	movs	r0, #2
- 8003338:	f7fd fd48 	bl	8000dcc <HAL_FLASH_Program>
+ 8003238:	4b0f      	ldr	r3, [pc, #60]	; (8003278 <write_payload+0x5c>)
+ 800323a:	6819      	ldr	r1, [r3, #0]
+ 800323c:	683b      	ldr	r3, [r7, #0]
+ 800323e:	681b      	ldr	r3, [r3, #0]
+ 8003240:	461a      	mov	r2, r3
+ 8003242:	f04f 0300 	mov.w	r3, #0
+ 8003246:	2002      	movs	r0, #2
+ 8003248:	f7fd fdc0 	bl	8000dcc <HAL_FLASH_Program>
 		start_address += 4;
- 800333c:	4b0a      	ldr	r3, [pc, #40]	; (8003368 <write_payload+0x5c>)
- 800333e:	681b      	ldr	r3, [r3, #0]
- 8003340:	3304      	adds	r3, #4
- 8003342:	4a09      	ldr	r2, [pc, #36]	; (8003368 <write_payload+0x5c>)
- 8003344:	6013      	str	r3, [r2, #0]
+ 800324c:	4b0a      	ldr	r3, [pc, #40]	; (8003278 <write_payload+0x5c>)
+ 800324e:	681b      	ldr	r3, [r3, #0]
+ 8003250:	3304      	adds	r3, #4
+ 8003252:	4a09      	ldr	r2, [pc, #36]	; (8003278 <write_payload+0x5c>)
+ 8003254:	6013      	str	r3, [r2, #0]
 	for (int i = 0; i < 16; i += 4)
- 8003346:	687b      	ldr	r3, [r7, #4]
- 8003348:	3304      	adds	r3, #4
- 800334a:	607b      	str	r3, [r7, #4]
- 800334c:	687b      	ldr	r3, [r7, #4]
- 800334e:	2b0f      	cmp	r3, #15
- 8003350:	dde4      	ble.n	800331c <write_payload+0x10>
+ 8003256:	687b      	ldr	r3, [r7, #4]
+ 8003258:	3304      	adds	r3, #4
+ 800325a:	607b      	str	r3, [r7, #4]
+ 800325c:	687b      	ldr	r3, [r7, #4]
+ 800325e:	2b0f      	cmp	r3, #15
+ 8003260:	dde4      	ble.n	800322c <write_payload+0x10>
 	}
-	HAL_FLASH_Unlock();
- 8003352:	f7fd fd8f 	bl	8000e74 <HAL_FLASH_Unlock>
+	HAL_FLASH_Lock();
+ 8003262:	f7fd fe29 	bl	8000eb8 <HAL_FLASH_Lock>
 	// clear receivedFrame for next packet
 	reset_recevied_frame();
- 8003356:	f000 f817 	bl	8003388 <reset_recevied_frame>
-	// this print will change to be an ack once crc read checks out ok
+ 8003266:	f000 f809 	bl	800327c <reset_recevied_frame>
+	// TODO: read back the data and check crc
 
-	//print("o");
-
-	//	HAL_FLASH_Lock();
 }
- 800335a:	bf00      	nop
- 800335c:	3708      	adds	r7, #8
- 800335e:	46bd      	mov	sp, r7
- 8003360:	bd80      	pop	{r7, pc}
- 8003362:	bf00      	nop
- 8003364:	20000138 	.word	0x20000138
- 8003368:	2000000c 	.word	0x2000000c
+ 800326a:	bf00      	nop
+ 800326c:	3708      	adds	r7, #8
+ 800326e:	46bd      	mov	sp, r7
+ 8003270:	bd80      	pop	{r7, pc}
+ 8003272:	bf00      	nop
+ 8003274:	20000134 	.word	0x20000134
+ 8003278:	2000000c 	.word	0x2000000c
 
-0800336c <jump_to_user_app>:
-
-static void jump_to_user_app(void)
-{
- 800336c:	b580      	push	{r7, lr}
- 800336e:	b082      	sub	sp, #8
- 8003370:	af00      	add	r7, sp, #0
-	void (*user_app_reset_handler)(void) = (void *)(*((uint32_t *)(USER_APP_LOCATION)));
- 8003372:	4b04      	ldr	r3, [pc, #16]	; (8003384 <jump_to_user_app+0x18>)
- 8003374:	681b      	ldr	r3, [r3, #0]
- 8003376:	607b      	str	r3, [r7, #4]
-	user_app_reset_handler();
- 8003378:	687b      	ldr	r3, [r7, #4]
- 800337a:	4798      	blx	r3
-}
- 800337c:	bf00      	nop
- 800337e:	3708      	adds	r7, #8
- 8003380:	46bd      	mov	sp, r7
- 8003382:	bd80      	pop	{r7, pc}
- 8003384:	08020004 	.word	0x08020004
-
-08003388 <reset_recevied_frame>:
+0800327c <reset_recevied_frame>:
+//-------------------------------------------------------------------
 static void reset_recevied_frame(void)
 {
- 8003388:	b480      	push	{r7}
- 800338a:	b083      	sub	sp, #12
- 800338c:	af00      	add	r7, sp, #0
+ 800327c:	b480      	push	{r7}
+ 800327e:	b083      	sub	sp, #12
+ 8003280:	af00      	add	r7, sp, #0
 	receivedFrame.start_of_frame = 0;
- 800338e:	4b20      	ldr	r3, [pc, #128]	; (8003410 <reset_recevied_frame+0x88>)
- 8003390:	2200      	movs	r2, #0
- 8003392:	701a      	strb	r2, [r3, #0]
- 8003394:	2200      	movs	r2, #0
- 8003396:	705a      	strb	r2, [r3, #1]
- 8003398:	2200      	movs	r2, #0
- 800339a:	709a      	strb	r2, [r3, #2]
- 800339c:	2200      	movs	r2, #0
- 800339e:	70da      	strb	r2, [r3, #3]
+ 8003282:	4b20      	ldr	r3, [pc, #128]	; (8003304 <reset_recevied_frame+0x88>)
+ 8003284:	2200      	movs	r2, #0
+ 8003286:	701a      	strb	r2, [r3, #0]
+ 8003288:	2200      	movs	r2, #0
+ 800328a:	705a      	strb	r2, [r3, #1]
+ 800328c:	2200      	movs	r2, #0
+ 800328e:	709a      	strb	r2, [r3, #2]
+ 8003290:	2200      	movs	r2, #0
+ 8003292:	70da      	strb	r2, [r3, #3]
 	receivedFrame.frame_id = 0;
- 80033a0:	4b1b      	ldr	r3, [pc, #108]	; (8003410 <reset_recevied_frame+0x88>)
- 80033a2:	2200      	movs	r2, #0
- 80033a4:	711a      	strb	r2, [r3, #4]
- 80033a6:	2200      	movs	r2, #0
- 80033a8:	715a      	strb	r2, [r3, #5]
- 80033aa:	2200      	movs	r2, #0
- 80033ac:	719a      	strb	r2, [r3, #6]
- 80033ae:	2200      	movs	r2, #0
- 80033b0:	71da      	strb	r2, [r3, #7]
+ 8003294:	4b1b      	ldr	r3, [pc, #108]	; (8003304 <reset_recevied_frame+0x88>)
+ 8003296:	2200      	movs	r2, #0
+ 8003298:	711a      	strb	r2, [r3, #4]
+ 800329a:	2200      	movs	r2, #0
+ 800329c:	715a      	strb	r2, [r3, #5]
+ 800329e:	2200      	movs	r2, #0
+ 80032a0:	719a      	strb	r2, [r3, #6]
+ 80032a2:	2200      	movs	r2, #0
+ 80032a4:	71da      	strb	r2, [r3, #7]
 	receivedFrame.payload_len = 0;
- 80033b2:	4b17      	ldr	r3, [pc, #92]	; (8003410 <reset_recevied_frame+0x88>)
- 80033b4:	2200      	movs	r2, #0
- 80033b6:	721a      	strb	r2, [r3, #8]
- 80033b8:	2200      	movs	r2, #0
- 80033ba:	725a      	strb	r2, [r3, #9]
+ 80032a6:	4b17      	ldr	r3, [pc, #92]	; (8003304 <reset_recevied_frame+0x88>)
+ 80032a8:	2200      	movs	r2, #0
+ 80032aa:	721a      	strb	r2, [r3, #8]
+ 80032ac:	2200      	movs	r2, #0
+ 80032ae:	725a      	strb	r2, [r3, #9]
 	receivedFrame.crc32 = 0;
- 80033bc:	4b14      	ldr	r3, [pc, #80]	; (8003410 <reset_recevied_frame+0x88>)
- 80033be:	2200      	movs	r2, #0
- 80033c0:	769a      	strb	r2, [r3, #26]
- 80033c2:	2200      	movs	r2, #0
- 80033c4:	76da      	strb	r2, [r3, #27]
- 80033c6:	2200      	movs	r2, #0
- 80033c8:	771a      	strb	r2, [r3, #28]
- 80033ca:	2200      	movs	r2, #0
- 80033cc:	775a      	strb	r2, [r3, #29]
+ 80032b0:	4b14      	ldr	r3, [pc, #80]	; (8003304 <reset_recevied_frame+0x88>)
+ 80032b2:	2200      	movs	r2, #0
+ 80032b4:	769a      	strb	r2, [r3, #26]
+ 80032b6:	2200      	movs	r2, #0
+ 80032b8:	76da      	strb	r2, [r3, #27]
+ 80032ba:	2200      	movs	r2, #0
+ 80032bc:	771a      	strb	r2, [r3, #28]
+ 80032be:	2200      	movs	r2, #0
+ 80032c0:	775a      	strb	r2, [r3, #29]
 	receivedFrame.end_of_frame = 0;
- 80033ce:	4b10      	ldr	r3, [pc, #64]	; (8003410 <reset_recevied_frame+0x88>)
- 80033d0:	2200      	movs	r2, #0
- 80033d2:	779a      	strb	r2, [r3, #30]
- 80033d4:	2200      	movs	r2, #0
- 80033d6:	77da      	strb	r2, [r3, #31]
- 80033d8:	2200      	movs	r2, #0
- 80033da:	f883 2020 	strb.w	r2, [r3, #32]
- 80033de:	2200      	movs	r2, #0
- 80033e0:	f883 2021 	strb.w	r2, [r3, #33]	; 0x21
+ 80032c2:	4b10      	ldr	r3, [pc, #64]	; (8003304 <reset_recevied_frame+0x88>)
+ 80032c4:	2200      	movs	r2, #0
+ 80032c6:	779a      	strb	r2, [r3, #30]
+ 80032c8:	2200      	movs	r2, #0
+ 80032ca:	77da      	strb	r2, [r3, #31]
+ 80032cc:	2200      	movs	r2, #0
+ 80032ce:	f883 2020 	strb.w	r2, [r3, #32]
+ 80032d2:	2200      	movs	r2, #0
+ 80032d4:	f883 2021 	strb.w	r2, [r3, #33]	; 0x21
 	for (int i = 0; i < 16; i++)
- 80033e4:	2300      	movs	r3, #0
- 80033e6:	607b      	str	r3, [r7, #4]
- 80033e8:	e008      	b.n	80033fc <reset_recevied_frame+0x74>
+ 80032d8:	2300      	movs	r3, #0
+ 80032da:	607b      	str	r3, [r7, #4]
+ 80032dc:	e008      	b.n	80032f0 <reset_recevied_frame+0x74>
 	{
 		receivedFrame.payload[i] = 0;
- 80033ea:	4a09      	ldr	r2, [pc, #36]	; (8003410 <reset_recevied_frame+0x88>)
- 80033ec:	687b      	ldr	r3, [r7, #4]
- 80033ee:	4413      	add	r3, r2
- 80033f0:	330a      	adds	r3, #10
- 80033f2:	2200      	movs	r2, #0
- 80033f4:	701a      	strb	r2, [r3, #0]
+ 80032de:	4a09      	ldr	r2, [pc, #36]	; (8003304 <reset_recevied_frame+0x88>)
+ 80032e0:	687b      	ldr	r3, [r7, #4]
+ 80032e2:	4413      	add	r3, r2
+ 80032e4:	330a      	adds	r3, #10
+ 80032e6:	2200      	movs	r2, #0
+ 80032e8:	701a      	strb	r2, [r3, #0]
 	for (int i = 0; i < 16; i++)
- 80033f6:	687b      	ldr	r3, [r7, #4]
- 80033f8:	3301      	adds	r3, #1
- 80033fa:	607b      	str	r3, [r7, #4]
- 80033fc:	687b      	ldr	r3, [r7, #4]
- 80033fe:	2b0f      	cmp	r3, #15
- 8003400:	ddf3      	ble.n	80033ea <reset_recevied_frame+0x62>
+ 80032ea:	687b      	ldr	r3, [r7, #4]
+ 80032ec:	3301      	adds	r3, #1
+ 80032ee:	607b      	str	r3, [r7, #4]
+ 80032f0:	687b      	ldr	r3, [r7, #4]
+ 80032f2:	2b0f      	cmp	r3, #15
+ 80032f4:	ddf3      	ble.n	80032de <reset_recevied_frame+0x62>
 	}
 }
- 8003402:	bf00      	nop
- 8003404:	bf00      	nop
- 8003406:	370c      	adds	r7, #12
- 8003408:	46bd      	mov	sp, r7
- 800340a:	f85d 7b04 	ldr.w	r7, [sp], #4
- 800340e:	4770      	bx	lr
- 8003410:	20000138 	.word	0x20000138
+ 80032f6:	bf00      	nop
+ 80032f8:	bf00      	nop
+ 80032fa:	370c      	adds	r7, #12
+ 80032fc:	46bd      	mov	sp, r7
+ 80032fe:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8003302:	4770      	bx	lr
+ 8003304:	20000134 	.word	0x20000134
 
-08003414 <bootloader_USART2_callback>:
-	while (!(USART2->SR & USART_SR_TC))
+08003308 <set_bl_state>:
+//-------------------------------------------------------------------
+static void set_bl_state(bootloader_state state)
+{
+ 8003308:	b480      	push	{r7}
+ 800330a:	b083      	sub	sp, #12
+ 800330c:	af00      	add	r7, sp, #0
+ 800330e:	4603      	mov	r3, r0
+ 8003310:	71fb      	strb	r3, [r7, #7]
+	bootloader_current_state = state;
+ 8003312:	4a04      	ldr	r2, [pc, #16]	; (8003324 <set_bl_state+0x1c>)
+ 8003314:	79fb      	ldrb	r3, [r7, #7]
+ 8003316:	7013      	strb	r3, [r2, #0]
+}
+ 8003318:	bf00      	nop
+ 800331a:	370c      	adds	r7, #12
+ 800331c:	46bd      	mov	sp, r7
+ 800331e:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8003322:	4770      	bx	lr
+ 8003324:	20000052 	.word	0x20000052
+
+08003328 <jump_to_user_app>:
+//-------------------------------------------------------------------
+static void jump_to_user_app(void)
+{
+ 8003328:	b580      	push	{r7, lr}
+ 800332a:	b082      	sub	sp, #8
+ 800332c:	af00      	add	r7, sp, #0
+	void (*user_app_reset_handler)(void) = (void *)(*((uint32_t *)(USER_APP_LOCATION)));
+ 800332e:	4b04      	ldr	r3, [pc, #16]	; (8003340 <jump_to_user_app+0x18>)
+ 8003330:	681b      	ldr	r3, [r3, #0]
+ 8003332:	607b      	str	r3, [r7, #4]
+	user_app_reset_handler();
+ 8003334:	687b      	ldr	r3, [r7, #4]
+ 8003336:	4798      	blx	r3
+}
+ 8003338:	bf00      	nop
+ 800333a:	3708      	adds	r7, #8
+ 800333c:	46bd      	mov	sp, r7
+ 800333e:	bd80      	pop	{r7, pc}
+ 8003340:	08020004 	.word	0x08020004
+
+08003344 <erase_sector>:
 		;
 }
-// TODO: lots to do here keep playing with it....
-void bootloader_USART2_callback(uint8_t data)
-{
- 8003414:	b480      	push	{r7}
- 8003416:	b083      	sub	sp, #12
- 8003418:	af00      	add	r7, sp, #0
- 800341a:	4603      	mov	r3, r0
- 800341c:	71fb      	strb	r3, [r7, #7]
-	// filll buffer until we have enough bytes to assemble a frame
-	if (bytes_received_count <= sizeof(frame_format_t))
- 800341e:	4b0f      	ldr	r3, [pc, #60]	; (800345c <bootloader_USART2_callback+0x48>)
- 8003420:	781b      	ldrb	r3, [r3, #0]
- 8003422:	2b22      	cmp	r3, #34	; 0x22
- 8003424:	d813      	bhi.n	800344e <bootloader_USART2_callback+0x3a>
-	{
-		bytes_buff[bytes_received_count++] = data;
- 8003426:	4b0d      	ldr	r3, [pc, #52]	; (800345c <bootloader_USART2_callback+0x48>)
- 8003428:	781b      	ldrb	r3, [r3, #0]
- 800342a:	1c5a      	adds	r2, r3, #1
- 800342c:	b2d1      	uxtb	r1, r2
- 800342e:	4a0b      	ldr	r2, [pc, #44]	; (800345c <bootloader_USART2_callback+0x48>)
- 8003430:	7011      	strb	r1, [r2, #0]
- 8003432:	4619      	mov	r1, r3
- 8003434:	4a0a      	ldr	r2, [pc, #40]	; (8003460 <bootloader_USART2_callback+0x4c>)
- 8003436:	79fb      	ldrb	r3, [r7, #7]
- 8003438:	5453      	strb	r3, [r2, r1]
-		if (bytes_received_count == sizeof(frame_format_t))
- 800343a:	4b08      	ldr	r3, [pc, #32]	; (800345c <bootloader_USART2_callback+0x48>)
- 800343c:	781b      	ldrb	r3, [r3, #0]
- 800343e:	2b22      	cmp	r3, #34	; 0x22
- 8003440:	d105      	bne.n	800344e <bootloader_USART2_callback+0x3a>
-		{
-
-			bytes_received_count = 0;
- 8003442:	4b06      	ldr	r3, [pc, #24]	; (800345c <bootloader_USART2_callback+0x48>)
- 8003444:	2200      	movs	r2, #0
- 8003446:	701a      	strb	r2, [r3, #0]
-			parse = true;
- 8003448:	4b06      	ldr	r3, [pc, #24]	; (8003464 <bootloader_USART2_callback+0x50>)
- 800344a:	2201      	movs	r2, #1
- 800344c:	701a      	strb	r2, [r3, #0]
-		}
-	}
-	// USART2->DR = data; //echo the data
-	//  HAL_GPIO_TogglePin(GPIOA, user_led_Pin);
-}
- 800344e:	bf00      	nop
- 8003450:	370c      	adds	r7, #12
- 8003452:	46bd      	mov	sp, r7
- 8003454:	f85d 7b04 	ldr.w	r7, [sp], #4
- 8003458:	4770      	bx	lr
- 800345a:	bf00      	nop
- 800345c:	2000004e 	.word	0x2000004e
- 8003460:	2000002c 	.word	0x2000002c
- 8003464:	20000050 	.word	0x20000050
-
-08003468 <erase_sector>:
-
-// TODO:  abstract sector erasing based user app memory locationa and size
+//-------------------------------------------------------------------
+// TODO:  abstract sector erasing based user app memory location and size
 void erase_sector(void)
 {
- 8003468:	b580      	push	{r7, lr}
- 800346a:	b086      	sub	sp, #24
- 800346c:	af00      	add	r7, sp, #0
+ 8003344:	b580      	push	{r7, lr}
+ 8003346:	b086      	sub	sp, #24
+ 8003348:	af00      	add	r7, sp, #0
 	FLASH_EraseInitTypeDef erase;
+	erase.TypeErase = FLASH_TYPEERASE_SECTORS;
+ 800334a:	2300      	movs	r3, #0
+ 800334c:	607b      	str	r3, [r7, #4]
 	erase.NbSectors = 1;
- 800346e:	2301      	movs	r3, #1
- 8003470:	613b      	str	r3, [r7, #16]
+ 800334e:	2301      	movs	r3, #1
+ 8003350:	613b      	str	r3, [r7, #16]
 	erase.Sector = FLASH_SECTOR_5;
- 8003472:	2305      	movs	r3, #5
- 8003474:	60fb      	str	r3, [r7, #12]
+ 8003352:	2305      	movs	r3, #5
+ 8003354:	60fb      	str	r3, [r7, #12]
 	erase.VoltageRange = FLASH_VOLTAGE_RANGE_3;
- 8003476:	2302      	movs	r3, #2
- 8003478:	617b      	str	r3, [r7, #20]
+ 8003356:	2302      	movs	r3, #2
+ 8003358:	617b      	str	r3, [r7, #20]
 	uint32_t err = 0;
- 800347a:	2300      	movs	r3, #0
- 800347c:	603b      	str	r3, [r7, #0]
+ 800335a:	2300      	movs	r3, #0
+ 800335c:	603b      	str	r3, [r7, #0]
 
 	HAL_FLASH_Unlock();
- 800347e:	f7fd fcf9 	bl	8000e74 <HAL_FLASH_Unlock>
+ 800335e:	f7fd fd89 	bl	8000e74 <HAL_FLASH_Unlock>
 	HAL_FLASHEx_Erase(&erase, &err);
- 8003482:	463a      	mov	r2, r7
- 8003484:	1d3b      	adds	r3, r7, #4
- 8003486:	4611      	mov	r1, r2
- 8003488:	4618      	mov	r0, r3
- 800348a:	f7fd fe65 	bl	8001158 <HAL_FLASHEx_Erase>
+ 8003362:	463a      	mov	r2, r7
+ 8003364:	1d3b      	adds	r3, r7, #4
+ 8003366:	4611      	mov	r1, r2
+ 8003368:	4618      	mov	r0, r3
+ 800336a:	f7fd fef5 	bl	8001158 <HAL_FLASHEx_Erase>
 	HAL_FLASH_Lock();
- 800348e:	f7fd fd13 	bl	8000eb8 <HAL_FLASH_Lock>
+ 800336e:	f7fd fda3 	bl	8000eb8 <HAL_FLASH_Lock>
+	// TODO: check return of FLASH ERASE and handle it.
 }
- 8003492:	bf00      	nop
- 8003494:	3718      	adds	r7, #24
- 8003496:	46bd      	mov	sp, r7
- 8003498:	bd80      	pop	{r7, pc}
+ 8003372:	bf00      	nop
+ 8003374:	3718      	adds	r7, #24
+ 8003376:	46bd      	mov	sp, r7
+ 8003378:	bd80      	pop	{r7, pc}
 	...
 
-0800349c <uart_send_data>:
+0800337c <uart_send_data>:
+//-------------------------------------------------------------------
 static void uart_send_data(uint8_t *data, uint16_t len)
 {
- 800349c:	b480      	push	{r7}
- 800349e:	b085      	sub	sp, #20
- 80034a0:	af00      	add	r7, sp, #0
- 80034a2:	6078      	str	r0, [r7, #4]
- 80034a4:	460b      	mov	r3, r1
- 80034a6:	807b      	strh	r3, [r7, #2]
+ 800337c:	b480      	push	{r7}
+ 800337e:	b085      	sub	sp, #20
+ 8003380:	af00      	add	r7, sp, #0
+ 8003382:	6078      	str	r0, [r7, #4]
+ 8003384:	460b      	mov	r3, r1
+ 8003386:	807b      	strh	r3, [r7, #2]
 	for (int i = 0; i < len; i++)
- 80034a8:	2300      	movs	r3, #0
- 80034aa:	60fb      	str	r3, [r7, #12]
- 80034ac:	e00f      	b.n	80034ce <uart_send_data+0x32>
+ 8003388:	2300      	movs	r3, #0
+ 800338a:	60fb      	str	r3, [r7, #12]
+ 800338c:	e00f      	b.n	80033ae <uart_send_data+0x32>
 	{
 		USART2->DR = data[i];
- 80034ae:	68fb      	ldr	r3, [r7, #12]
- 80034b0:	687a      	ldr	r2, [r7, #4]
- 80034b2:	4413      	add	r3, r2
- 80034b4:	781a      	ldrb	r2, [r3, #0]
- 80034b6:	4b0f      	ldr	r3, [pc, #60]	; (80034f4 <uart_send_data+0x58>)
- 80034b8:	605a      	str	r2, [r3, #4]
+ 800338e:	68fb      	ldr	r3, [r7, #12]
+ 8003390:	687a      	ldr	r2, [r7, #4]
+ 8003392:	4413      	add	r3, r2
+ 8003394:	781a      	ldrb	r2, [r3, #0]
+ 8003396:	4b0f      	ldr	r3, [pc, #60]	; (80033d4 <uart_send_data+0x58>)
+ 8003398:	605a      	str	r2, [r3, #4]
 		while (!(USART2->SR & USART_SR_TXE))
- 80034ba:	bf00      	nop
- 80034bc:	4b0d      	ldr	r3, [pc, #52]	; (80034f4 <uart_send_data+0x58>)
- 80034be:	681b      	ldr	r3, [r3, #0]
- 80034c0:	f003 0380 	and.w	r3, r3, #128	; 0x80
- 80034c4:	2b00      	cmp	r3, #0
- 80034c6:	d0f9      	beq.n	80034bc <uart_send_data+0x20>
+ 800339a:	bf00      	nop
+ 800339c:	4b0d      	ldr	r3, [pc, #52]	; (80033d4 <uart_send_data+0x58>)
+ 800339e:	681b      	ldr	r3, [r3, #0]
+ 80033a0:	f003 0380 	and.w	r3, r3, #128	; 0x80
+ 80033a4:	2b00      	cmp	r3, #0
+ 80033a6:	d0f9      	beq.n	800339c <uart_send_data+0x20>
 	for (int i = 0; i < len; i++)
- 80034c8:	68fb      	ldr	r3, [r7, #12]
- 80034ca:	3301      	adds	r3, #1
- 80034cc:	60fb      	str	r3, [r7, #12]
- 80034ce:	887b      	ldrh	r3, [r7, #2]
- 80034d0:	68fa      	ldr	r2, [r7, #12]
- 80034d2:	429a      	cmp	r2, r3
- 80034d4:	dbeb      	blt.n	80034ae <uart_send_data+0x12>
+ 80033a8:	68fb      	ldr	r3, [r7, #12]
+ 80033aa:	3301      	adds	r3, #1
+ 80033ac:	60fb      	str	r3, [r7, #12]
+ 80033ae:	887b      	ldrh	r3, [r7, #2]
+ 80033b0:	68fa      	ldr	r2, [r7, #12]
+ 80033b2:	429a      	cmp	r2, r3
+ 80033b4:	dbeb      	blt.n	800338e <uart_send_data+0x12>
 			;
 	}
 
 	while (!(USART2->SR & USART_SR_TC))
- 80034d6:	bf00      	nop
- 80034d8:	4b06      	ldr	r3, [pc, #24]	; (80034f4 <uart_send_data+0x58>)
- 80034da:	681b      	ldr	r3, [r3, #0]
- 80034dc:	f003 0340 	and.w	r3, r3, #64	; 0x40
- 80034e0:	2b00      	cmp	r3, #0
- 80034e2:	d0f9      	beq.n	80034d8 <uart_send_data+0x3c>
+ 80033b6:	bf00      	nop
+ 80033b8:	4b06      	ldr	r3, [pc, #24]	; (80033d4 <uart_send_data+0x58>)
+ 80033ba:	681b      	ldr	r3, [r3, #0]
+ 80033bc:	f003 0340 	and.w	r3, r3, #64	; 0x40
+ 80033c0:	2b00      	cmp	r3, #0
+ 80033c2:	d0f9      	beq.n	80033b8 <uart_send_data+0x3c>
 		;
 }
- 80034e4:	bf00      	nop
- 80034e6:	bf00      	nop
- 80034e8:	3714      	adds	r7, #20
- 80034ea:	46bd      	mov	sp, r7
- 80034ec:	f85d 7b04 	ldr.w	r7, [sp], #4
- 80034f0:	4770      	bx	lr
- 80034f2:	bf00      	nop
- 80034f4:	40004400 	.word	0x40004400
+ 80033c4:	bf00      	nop
+ 80033c6:	bf00      	nop
+ 80033c8:	3714      	adds	r7, #20
+ 80033ca:	46bd      	mov	sp, r7
+ 80033cc:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80033d0:	4770      	bx	lr
+ 80033d2:	bf00      	nop
+ 80033d4:	40004400 	.word	0x40004400
 
-080034f8 <__libc_init_array>:
- 80034f8:	b570      	push	{r4, r5, r6, lr}
- 80034fa:	4d0d      	ldr	r5, [pc, #52]	; (8003530 <__libc_init_array+0x38>)
- 80034fc:	4c0d      	ldr	r4, [pc, #52]	; (8003534 <__libc_init_array+0x3c>)
- 80034fe:	1b64      	subs	r4, r4, r5
- 8003500:	10a4      	asrs	r4, r4, #2
- 8003502:	2600      	movs	r6, #0
- 8003504:	42a6      	cmp	r6, r4
- 8003506:	d109      	bne.n	800351c <__libc_init_array+0x24>
- 8003508:	4d0b      	ldr	r5, [pc, #44]	; (8003538 <__libc_init_array+0x40>)
- 800350a:	4c0c      	ldr	r4, [pc, #48]	; (800353c <__libc_init_array+0x44>)
- 800350c:	f000 f820 	bl	8003550 <_init>
- 8003510:	1b64      	subs	r4, r4, r5
- 8003512:	10a4      	asrs	r4, r4, #2
- 8003514:	2600      	movs	r6, #0
- 8003516:	42a6      	cmp	r6, r4
- 8003518:	d105      	bne.n	8003526 <__libc_init_array+0x2e>
- 800351a:	bd70      	pop	{r4, r5, r6, pc}
- 800351c:	f855 3b04 	ldr.w	r3, [r5], #4
- 8003520:	4798      	blx	r3
- 8003522:	3601      	adds	r6, #1
- 8003524:	e7ee      	b.n	8003504 <__libc_init_array+0xc>
- 8003526:	f855 3b04 	ldr.w	r3, [r5], #4
- 800352a:	4798      	blx	r3
- 800352c:	3601      	adds	r6, #1
- 800352e:	e7f2      	b.n	8003516 <__libc_init_array+0x1e>
- 8003530:	08003588 	.word	0x08003588
- 8003534:	08003588 	.word	0x08003588
- 8003538:	08003588 	.word	0x08003588
- 800353c:	0800358c 	.word	0x0800358c
+080033d8 <sendFrame>:
+//-------------------------------------------------------------------
+static void sendFrame(frame_format_t *frame)
+{
+ 80033d8:	b580      	push	{r7, lr}
+ 80033da:	b084      	sub	sp, #16
+ 80033dc:	af00      	add	r7, sp, #0
+ 80033de:	6078      	str	r0, [r7, #4]
+	uint8_t *temp = NULL;
+ 80033e0:	2300      	movs	r3, #0
+ 80033e2:	60fb      	str	r3, [r7, #12]
+	temp = (uint8_t *)frame;
+ 80033e4:	687b      	ldr	r3, [r7, #4]
+ 80033e6:	60fb      	str	r3, [r7, #12]
+	uart_send_data(temp, sizeof(frame_format_t));
+ 80033e8:	2122      	movs	r1, #34	; 0x22
+ 80033ea:	68f8      	ldr	r0, [r7, #12]
+ 80033ec:	f7ff ffc6 	bl	800337c <uart_send_data>
+}
+ 80033f0:	bf00      	nop
+ 80033f2:	3710      	adds	r7, #16
+ 80033f4:	46bd      	mov	sp, r7
+ 80033f6:	bd80      	pop	{r7, pc}
 
-08003540 <memset>:
- 8003540:	4402      	add	r2, r0
- 8003542:	4603      	mov	r3, r0
- 8003544:	4293      	cmp	r3, r2
- 8003546:	d100      	bne.n	800354a <memset+0xa>
- 8003548:	4770      	bx	lr
- 800354a:	f803 1b01 	strb.w	r1, [r3], #1
- 800354e:	e7f9      	b.n	8003544 <memset+0x4>
+080033f8 <bootloader_USART2_callback>:
+//-------------------------------------------------------------------
+void bootloader_USART2_callback(uint8_t data)
+{
+ 80033f8:	b480      	push	{r7}
+ 80033fa:	b083      	sub	sp, #12
+ 80033fc:	af00      	add	r7, sp, #0
+ 80033fe:	4603      	mov	r3, r0
+ 8003400:	71fb      	strb	r3, [r7, #7]
+	static uint8_t bytes_received_count = 0;
+	// filll buffer until we have enough bytes to assemble a frame
+	if (bytes_received_count <= sizeof(frame_format_t))
+ 8003402:	4b0f      	ldr	r3, [pc, #60]	; (8003440 <bootloader_USART2_callback+0x48>)
+ 8003404:	781b      	ldrb	r3, [r3, #0]
+ 8003406:	2b22      	cmp	r3, #34	; 0x22
+ 8003408:	d813      	bhi.n	8003432 <bootloader_USART2_callback+0x3a>
+	{
+		bytes_buff[bytes_received_count++] = data;
+ 800340a:	4b0d      	ldr	r3, [pc, #52]	; (8003440 <bootloader_USART2_callback+0x48>)
+ 800340c:	781b      	ldrb	r3, [r3, #0]
+ 800340e:	1c5a      	adds	r2, r3, #1
+ 8003410:	b2d1      	uxtb	r1, r2
+ 8003412:	4a0b      	ldr	r2, [pc, #44]	; (8003440 <bootloader_USART2_callback+0x48>)
+ 8003414:	7011      	strb	r1, [r2, #0]
+ 8003416:	4619      	mov	r1, r3
+ 8003418:	4a0a      	ldr	r2, [pc, #40]	; (8003444 <bootloader_USART2_callback+0x4c>)
+ 800341a:	79fb      	ldrb	r3, [r7, #7]
+ 800341c:	5453      	strb	r3, [r2, r1]
+		if (bytes_received_count == sizeof(frame_format_t))
+ 800341e:	4b08      	ldr	r3, [pc, #32]	; (8003440 <bootloader_USART2_callback+0x48>)
+ 8003420:	781b      	ldrb	r3, [r3, #0]
+ 8003422:	2b22      	cmp	r3, #34	; 0x22
+ 8003424:	d105      	bne.n	8003432 <bootloader_USART2_callback+0x3a>
+		{
 
-08003550 <_init>:
- 8003550:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 8003552:	bf00      	nop
- 8003554:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 8003556:	bc08      	pop	{r3}
- 8003558:	469e      	mov	lr, r3
- 800355a:	4770      	bx	lr
+			bytes_received_count = 0;
+ 8003426:	4b06      	ldr	r3, [pc, #24]	; (8003440 <bootloader_USART2_callback+0x48>)
+ 8003428:	2200      	movs	r2, #0
+ 800342a:	701a      	strb	r2, [r3, #0]
+			parse = true;
+ 800342c:	4b06      	ldr	r3, [pc, #24]	; (8003448 <bootloader_USART2_callback+0x50>)
+ 800342e:	2201      	movs	r2, #1
+ 8003430:	701a      	strb	r2, [r3, #0]
+		}
+	}
+}
+ 8003432:	bf00      	nop
+ 8003434:	370c      	adds	r7, #12
+ 8003436:	46bd      	mov	sp, r7
+ 8003438:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800343c:	4770      	bx	lr
+ 800343e:	bf00      	nop
+ 8003440:	20000054 	.word	0x20000054
+ 8003444:	20000030 	.word	0x20000030
+ 8003448:	2000002c 	.word	0x2000002c
 
-0800355c <_fini>:
- 800355c:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 800355e:	bf00      	nop
- 8003560:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 8003562:	bc08      	pop	{r3}
- 8003564:	469e      	mov	lr, r3
- 8003566:	4770      	bx	lr
+0800344c <parse_frame>:
+//-------------------------------------------------------------------
+static bool parse_frame(void)
+{
+ 800344c:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 800344e:	af00      	add	r7, sp, #0
+	// checks if we have a frame to parse
+	if (parse)
+ 8003450:	4b18      	ldr	r3, [pc, #96]	; (80034b4 <parse_frame+0x68>)
+ 8003452:	781b      	ldrb	r3, [r3, #0]
+ 8003454:	2b00      	cmp	r3, #0
+ 8003456:	d02a      	beq.n	80034ae <parse_frame+0x62>
+	{
+		parse = false;
+ 8003458:	4b16      	ldr	r3, [pc, #88]	; (80034b4 <parse_frame+0x68>)
+ 800345a:	2200      	movs	r2, #0
+ 800345c:	701a      	strb	r2, [r3, #0]
+		// assemble a frame from bytes_buff
+		memcpy(&receivedFrame, bytes_buff, sizeof(frame_format_t));
+ 800345e:	4b16      	ldr	r3, [pc, #88]	; (80034b8 <parse_frame+0x6c>)
+ 8003460:	4a16      	ldr	r2, [pc, #88]	; (80034bc <parse_frame+0x70>)
+ 8003462:	4614      	mov	r4, r2
+ 8003464:	469c      	mov	ip, r3
+ 8003466:	f104 0e20 	add.w	lr, r4, #32
+ 800346a:	4665      	mov	r5, ip
+ 800346c:	4626      	mov	r6, r4
+ 800346e:	ce0f      	ldmia	r6!, {r0, r1, r2, r3}
+ 8003470:	6028      	str	r0, [r5, #0]
+ 8003472:	6069      	str	r1, [r5, #4]
+ 8003474:	60aa      	str	r2, [r5, #8]
+ 8003476:	60eb      	str	r3, [r5, #12]
+ 8003478:	3410      	adds	r4, #16
+ 800347a:	f10c 0c10 	add.w	ip, ip, #16
+ 800347e:	4574      	cmp	r4, lr
+ 8003480:	d1f3      	bne.n	800346a <parse_frame+0x1e>
+ 8003482:	4662      	mov	r2, ip
+ 8003484:	4623      	mov	r3, r4
+ 8003486:	881b      	ldrh	r3, [r3, #0]
+ 8003488:	8013      	strh	r3, [r2, #0]
+		// clear bytes buffer
+		memset(bytes_buff, 0, sizeof(frame_format_t));
+ 800348a:	2222      	movs	r2, #34	; 0x22
+ 800348c:	2100      	movs	r1, #0
+ 800348e:	480b      	ldr	r0, [pc, #44]	; (80034bc <parse_frame+0x70>)
+ 8003490:	f000 f83e 	bl	8003510 <memset>
+		// the type of frame we get will dictate what the next state should be
+		if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME)
+ 8003494:	4b08      	ldr	r3, [pc, #32]	; (80034b8 <parse_frame+0x6c>)
+ 8003496:	681b      	ldr	r3, [r3, #0]
+ 8003498:	4a09      	ldr	r2, [pc, #36]	; (80034c0 <parse_frame+0x74>)
+ 800349a:	4293      	cmp	r3, r2
+ 800349c:	d107      	bne.n	80034ae <parse_frame+0x62>
+ 800349e:	4b06      	ldr	r3, [pc, #24]	; (80034b8 <parse_frame+0x6c>)
+ 80034a0:	f8d3 301e 	ldr.w	r3, [r3, #30]
+ 80034a4:	4a07      	ldr	r2, [pc, #28]	; (80034c4 <parse_frame+0x78>)
+ 80034a6:	4293      	cmp	r3, r2
+ 80034a8:	d101      	bne.n	80034ae <parse_frame+0x62>
+		{
+			// TODO: check CRC
+			// if frame is valid
+			return true;
+ 80034aa:	2301      	movs	r3, #1
+ 80034ac:	e000      	b.n	80034b0 <parse_frame+0x64>
+		}
+	}
+	return false;
+ 80034ae:	2300      	movs	r3, #0
+}
+ 80034b0:	4618      	mov	r0, r3
+ 80034b2:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
+ 80034b4:	2000002c 	.word	0x2000002c
+ 80034b8:	20000134 	.word	0x20000134
+ 80034bc:	20000030 	.word	0x20000030
+ 80034c0:	45444459 	.word	0x45444459
+ 80034c4:	46414952 	.word	0x46414952
+
+080034c8 <__libc_init_array>:
+ 80034c8:	b570      	push	{r4, r5, r6, lr}
+ 80034ca:	4d0d      	ldr	r5, [pc, #52]	; (8003500 <__libc_init_array+0x38>)
+ 80034cc:	4c0d      	ldr	r4, [pc, #52]	; (8003504 <__libc_init_array+0x3c>)
+ 80034ce:	1b64      	subs	r4, r4, r5
+ 80034d0:	10a4      	asrs	r4, r4, #2
+ 80034d2:	2600      	movs	r6, #0
+ 80034d4:	42a6      	cmp	r6, r4
+ 80034d6:	d109      	bne.n	80034ec <__libc_init_array+0x24>
+ 80034d8:	4d0b      	ldr	r5, [pc, #44]	; (8003508 <__libc_init_array+0x40>)
+ 80034da:	4c0c      	ldr	r4, [pc, #48]	; (800350c <__libc_init_array+0x44>)
+ 80034dc:	f000 f820 	bl	8003520 <_init>
+ 80034e0:	1b64      	subs	r4, r4, r5
+ 80034e2:	10a4      	asrs	r4, r4, #2
+ 80034e4:	2600      	movs	r6, #0
+ 80034e6:	42a6      	cmp	r6, r4
+ 80034e8:	d105      	bne.n	80034f6 <__libc_init_array+0x2e>
+ 80034ea:	bd70      	pop	{r4, r5, r6, pc}
+ 80034ec:	f855 3b04 	ldr.w	r3, [r5], #4
+ 80034f0:	4798      	blx	r3
+ 80034f2:	3601      	adds	r6, #1
+ 80034f4:	e7ee      	b.n	80034d4 <__libc_init_array+0xc>
+ 80034f6:	f855 3b04 	ldr.w	r3, [r5], #4
+ 80034fa:	4798      	blx	r3
+ 80034fc:	3601      	adds	r6, #1
+ 80034fe:	e7f2      	b.n	80034e6 <__libc_init_array+0x1e>
+ 8003500:	08003558 	.word	0x08003558
+ 8003504:	08003558 	.word	0x08003558
+ 8003508:	08003558 	.word	0x08003558
+ 800350c:	0800355c 	.word	0x0800355c
+
+08003510 <memset>:
+ 8003510:	4402      	add	r2, r0
+ 8003512:	4603      	mov	r3, r0
+ 8003514:	4293      	cmp	r3, r2
+ 8003516:	d100      	bne.n	800351a <memset+0xa>
+ 8003518:	4770      	bx	lr
+ 800351a:	f803 1b01 	strb.w	r1, [r3], #1
+ 800351e:	e7f9      	b.n	8003514 <memset+0x4>
+
+08003520 <_init>:
+ 8003520:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8003522:	bf00      	nop
+ 8003524:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8003526:	bc08      	pop	{r3}
+ 8003528:	469e      	mov	lr, r3
+ 800352a:	4770      	bx	lr
+
+0800352c <_fini>:
+ 800352c:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 800352e:	bf00      	nop
+ 8003530:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8003532:	bc08      	pop	{r3}
+ 8003534:	469e      	mov	lr, r3
+ 8003536:	4770      	bx	lr
