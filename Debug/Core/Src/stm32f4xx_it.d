@@ -27,8 +27,8 @@ Core/Src/stm32f4xx_it.o: ../Core/Src/stm32f4xx_it.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/stm32f4xx_it.h \
  F:/EclipseWorkSpace/STM32_Bootloader/bootloader_app/include/bootloader.h \
- F:/EclipseWorkSpace/STM32_Bootloader/bootloader_app/include/BL_frames.h \
- ../Core/Inc/usart.h ../Core/Inc/main.h ../Core/Inc/gpio.h
+ ../Core/Inc/usart.h ../Core/Inc/main.h ../Core/Inc/gpio.h \
+ F:/EclipseWorkSpace/STM32_Bootloader/bootloader_app/include/frames.h
 
 ../Core/Inc/main.h:
 
@@ -88,10 +88,10 @@ Core/Src/stm32f4xx_it.o: ../Core/Src/stm32f4xx_it.c ../Core/Inc/main.h \
 
 F:/EclipseWorkSpace/STM32_Bootloader/bootloader_app/include/bootloader.h:
 
-F:/EclipseWorkSpace/STM32_Bootloader/bootloader_app/include/BL_frames.h:
-
 ../Core/Inc/usart.h:
 
 ../Core/Inc/main.h:
 
 ../Core/Inc/gpio.h:
+
+F:/EclipseWorkSpace/STM32_Bootloader/bootloader_app/include/frames.h:
