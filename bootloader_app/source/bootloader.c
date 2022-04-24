@@ -2,6 +2,12 @@
 #include "frames.h"
 //location of reset handler for user_app
 #define USER_APP_LOCATION (0x8020000 + 4)
+//#define DEBUG_ENABLED 1
+#ifdef DEBUG_ENABLED 
+#define debug_print(x) print(x)
+#else
+#define debug_print(...) ((void)0)
+#endif
 uint32_t start_address = 0x8020000;
 
 static bool valid_header = false;
@@ -50,7 +56,7 @@ void bootloader_main(void)
 //-------------------------------------------------------------------
 void bootloaderInit(void)
 {
-	print("Bootloader init\r\n");
+	debug_print("Bootloader init\r\n");
 	// create the ACK frame
 	ackFrame.start_of_frame = BL_START_OF_FRAME;
 	ackFrame.frame_id = BL_ACK_FRAME;
@@ -72,7 +78,7 @@ void bootloaderInit(void)
 	{
 		nackFrame.payload[i] = i;
 	}
-	print("Ack / Nack frames created \r\n");
+	debug_print("Ack / Nack frames created \r\n");
 }
 //-------------------------------------------------------------------
 frame_format_t idle_state_func(void)
@@ -227,26 +233,31 @@ static void sendFrame(frame_format_t *frame)
 //-------------------------------------------------------------------
 void bootloader_USART2_callback(uint8_t data)
 {
-
-	//should first only listen for a header : header_frame_format_t
-	//once ehader is received then it can listen for frames : frame_format_t
 	static uint8_t bytes_received_count = 0;
-	// filll buffer until we have enough bytes to assemble a frame
-	if(valid_header != true)
+	//should first only listen for a header : header_frame_format_t
+	//once header is received then listen for frames : frame_format_t
+	if(valid_header != true)//listen for valid header
 	{
-		//keep lsitneing for valid header
+		//TODO: this if and else code is redundant , fix later 
+		// fill buffer until we have enough bytes to assemble a frame
 		if (bytes_received_count <= sizeof(header_frame_format_t))
 		{
+			bytes_buff[bytes_received_count++] = data;
+			if (bytes_received_count == sizeof(frame_format_t))
+			{
+				bytes_received_count = 0;
+				parse = true;
+			}
 		}
 	}
 	else
 	{
+		// fill buffer until we have enough bytes to assemble a frame
 		if (bytes_received_count <= sizeof(frame_format_t))
 		{
 			bytes_buff[bytes_received_count++] = data;
 			if (bytes_received_count == sizeof(frame_format_t))
 			{
-
 				bytes_received_count = 0;
 				parse = true;
 			}
