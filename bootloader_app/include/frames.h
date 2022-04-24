@@ -57,6 +57,7 @@ typedef struct __attribute__((packed))
 typedef enum bootloader_state
 {
     BL_STATE_IDLE = 0,
+    BL_STATE_BOOTLOADER,
     BL_STATE_START_UPDATE,
     BL_STATE_UPDATING,
 }bootloader_state ; 

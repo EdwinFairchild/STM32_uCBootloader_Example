@@ -1,12 +1,12 @@
 #include "bootloader.h"
 #include "frames.h"
-
+//https://online.visual-paradigm.com/app/diagrams/#diagram:proj=0&type=StateMachineDiagram&width=11&height=8.5&unit=inch
 //---------------| Debug switch |----------------
 #define DEBUG_ENABLED 1
 #ifdef DEBUG_ENABLED 
-#define debug_print(x) print(x)
+#define debug_print print
 #else
-#define debug_print(...) ((void)0)
+#define debug_print ((void)0)
 #endif
 
 //location of reset handler for user_app
@@ -14,26 +14,37 @@
 uint32_t start_address = 0x8020000;
 
 static bool valid_header = false;
-static bool parse = false;
+static bool parse = false; //flag to parse frame b/c I dont want to parse in ISR
 uint8_t bytes_buff[sizeof(frame_format_t)] = {0};
+uint8_t header_bytes_buff[sizeof(header_frame_format_t)] = {0};
+
+header_frame_format_t header_receivedFrame;
 frame_format_t receivedFrame; 
 frame_format_t ackFrame;
 frame_format_t nackFrame;
 bootloader_state bootloader_current_state = BL_STATE_IDLE;
 
 //-----------------------| prototypes |-----------------------
+//helper functoins
+void bootloaderInit(void);
 static void print(char *msg, ...);
 static void jump_to_user_app(void);
 static void uart_send_data(uint8_t *data, uint16_t len);
 static bool parse_frame(void);
-void bootloaderInit(void);
-frame_format_t idle_state_func(void);
-frame_format_t updating_state_func(void);
 static void reset_recevied_frame(void);
+static void reset_header_frame(void);
 static void set_bl_state(bootloader_state state);
 static void sendFrame(frame_format_t *frame);
+
+//flash manipulating functions
 void erase_sector(void);
 static void write_payload(void);
+
+//state functions
+frame_format_t idle_state_func(void);
+frame_format_t bl_mode_state_func(void);
+frame_format_t updating_state_func(void);
+
 //-------------------------------------------------------------------
 void bootloader_main(void)
 {
@@ -43,14 +54,18 @@ void bootloader_main(void)
 	bootloaderInit();
 	uint32_t timeNow = HAL_GetTick(); //current timestamp
 	bootloader_state_functions[BL_STATE_IDLE] = idle_state_func;
-	//bootloader_state_functions[STATE_START_UPDATE] = start_update_state_func;
+	bootloader_state_functions[BL_STATE_BOOTLOADER] = bl_mode_state_func;
 	bootloader_state_functions[BL_STATE_UPDATING] = updating_state_func;
 
 	while(1)
 	{
 		(*bootloader_state_functions[bootloader_current_state])();
+		//if we have not recevied a valid header in 15s (exagerated time to wait)
+		//then jump to application
         if(((HAL_GetTick() - timeNow) > 15000) && (bootloader_current_state == BL_STATE_IDLE))
         {
+        	//TODO : do not blindly jump to application, check if one exists. 
+        	debug_print("No valid header received, jumping to user app.\r\n");
         	jump_to_user_app();
         }
 
@@ -59,7 +74,7 @@ void bootloader_main(void)
 //-------------------------------------------------------------------
 void bootloaderInit(void)
 {
-	debug_print("Bootloader init\r\n");
+	debug_print("Initializing uCBootloader \r\n");
 	// create the ACK frame
 	ackFrame.start_of_frame = BL_ELEMENT_START_OF_FRAME;
 	ackFrame.frame_id = BL_FRAME_ID_ACK_FRAME;
@@ -81,21 +96,59 @@ void bootloaderInit(void)
 	{
 		nackFrame.payload[i] = i;
 	}
-	debug_print("Ack / Nack frames created \r\n");
+
+	reset_header_frame();
+
+	debug_print("Ack / Nack frames created.\r\n");
 }
 //-------------------------------------------------------------------
 frame_format_t idle_state_func(void)
+{
+
+	if (parse_frame())
+	{
+		debug_print("Parse == true\r\n");
+		switch (header_receivedFrame.frame_id)
+		{
+			case BL_FRAME_ID_HEADER :
+             
+			//TODO validate header
+			//validate_header();
+			valid_header = true;
+			debug_print("Switching to bootloader state\r\n");
+			set_bl_state(BL_STATE_BOOTLOADER);
+			reset_header_frame();
+			sendFrame(&ackFrame);
+			break;
+
+			case BL_FRAME_ID_START_UPDATE:
+				set_bl_state(BL_STATE_UPDATING);
+				reset_recevied_frame();
+				sendFrame(&ackFrame);
+				break;
+
+		// only states above are valid to switch out of idle state
+		default:
+			set_bl_state(BL_STATE_IDLE);
+			reset_recevied_frame();
+		}
+	}
+	//return (frame_format_t)0;
+	return ackFrame;
+}
+frame_format_t bl_mode_state_func(void)
 {
 	if (parse_frame())
 	{
 
 		switch (receivedFrame.frame_id)
 		{
-		case BL_FRAME_ID_START_UPDATE:
-			set_bl_state(BL_STATE_UPDATING);
-			reset_recevied_frame();
-			sendFrame(&ackFrame);
-			break;
+
+			case BL_FRAME_ID_START_UPDATE:
+				set_bl_state(BL_STATE_UPDATING);
+				reset_recevied_frame();
+				sendFrame(&ackFrame);
+				break;
 
 		// only states above are valid to switch out of idle state
 		default:
@@ -168,6 +221,19 @@ static void reset_recevied_frame(void)
 		receivedFrame.payload[i] = 0;
 	}
 }
+static void reset_header_frame(void)
+{
+	//use something like memset here
+	header_receivedFrame.start_of_frame = 0;
+    header_receivedFrame.frame_id = 0;
+    header_receivedFrame.magicNumber = 0;
+    header_receivedFrame.image_checksum = 0; 
+    header_receivedFrame.firmware_version = 0; 
+    header_receivedFrame.imageSize = 0;
+    header_receivedFrame.jumpValue = 0;
+    header_receivedFrame.crc32 = 0; 
+    header_receivedFrame.end_of_frame = 0;
+}
 //-------------------------------------------------------------------
 static void set_bl_state(bootloader_state state)
 {
@@ -237,23 +303,27 @@ static void sendFrame(frame_format_t *frame)
 void bootloader_USART2_callback(uint8_t data)
 {
 	static uint8_t bytes_received_count = 0;
+	
 	//should first only listen for a header : header_frame_format_t
-	//once header is received then listen for frames : frame_format_t
-	if(valid_header != true)//listen for valid header
+	if(valid_header == false)//listen for valid header
 	{
 		//TODO: this if and else code is redundant , fix later 
 		// fill buffer until we have enough bytes to assemble a frame
 		if (bytes_received_count <= sizeof(header_frame_format_t))
 		{
-			bytes_buff[bytes_received_count++] = data;
-			if (bytes_received_count == sizeof(frame_format_t))
+
+			header_bytes_buff[bytes_received_count++] = data;
+			if (bytes_received_count == sizeof(header_frame_format_t))
 			{
 				bytes_received_count = 0;
 				parse = true;
+				debug_print("Enough bytes for a header received\r\n");
+				
+				
 			}
 		}
 	}
-	else
+	else //once header is received then listen for frames : frame_format_t
 	{
 		// fill buffer until we have enough bytes to assemble a frame
 		if (bytes_received_count <= sizeof(frame_format_t))
@@ -261,6 +331,7 @@ void bootloader_USART2_callback(uint8_t data)
 			bytes_buff[bytes_received_count++] = data;
 			if (bytes_received_count == sizeof(frame_format_t))
 			{
+				debug_print("got more\r\n");
 				bytes_received_count = 0;
 				parse = true;
 			}
@@ -270,22 +341,74 @@ void bootloader_USART2_callback(uint8_t data)
 //-------------------------------------------------------------------
 static bool parse_frame(void)
 {
+	//TODO: this is also stupidly redundant 
+	//make temp pointers that will either point to a regualar frame or
+	//header frame as well as buffers
 	// checks if we have a frame to parse
+	//parse variable will have been set in UART callback
+	//code below not test
+	// void *receviedFrame_PTR =  NULL;
+	// uint8_t len = 0;
+	// if(valid_header)
+	// {
+	// 	receviedFrame_PTR = &receivedFrame;
+	// 	len = sizeof(frame_format_t);
+	// }
+	// else
+	// {
+	// 	receviedFrame_PTR = &header_receivedFrame;
+	// 	len = sizeof(header_frame_format_t);
+	// }
 	if (parse)
 	{
+
 		parse = false;
-		// assemble a frame from bytes_buff
-		memcpy(&receivedFrame, bytes_buff, sizeof(frame_format_t));
-		// clear bytes buffer
-		memset(bytes_buff, 0, sizeof(frame_format_t));
-		// the type of frame we get will dictate what the next state should be
-		if (receivedFrame.start_of_frame == BL_ELEMENT_START_OF_FRAME && receivedFrame.end_of_frame == BL_ELEMENT_END_OF_FRAME)
+		//if we already have a valid header then we are parsing regualr frames
+		if(valid_header)
 		{
-			// TODO: check CRC
-			// if frame is valid
-			return true;
+
+			// assemble a frame from bytes_buff
+			memcpy(&receivedFrame, bytes_buff, sizeof(frame_format_t));
+			// clear bytes buffer
+			memset(bytes_buff, 0, sizeof(frame_format_t));
+			// the type of frame we get will dictate what the next state should be
+			if (receivedFrame.start_of_frame == BL_ELEMENT_START_OF_FRAME && receivedFrame.end_of_frame == BL_ELEMENT_END_OF_FRAME)
+			{
+				debug_print("valid frame received\r\n");
+				// TODO: check CRC
+				// if frame is valid
+				return true;
+			}
+			else
+			{
+				debug_print("Invalid frame %d\r\n", 42);
+			}
+
+		}
+		//no valid header has been received so only try to parse frames as headers
+		else
+		{
+			debug_print("parsing header\r\n");
+			// assemble a frame from bytes_buff
+			memcpy(&header_receivedFrame, header_bytes_buff, sizeof(header_frame_format_t));
+			// clear bytes buffer
+			memset(header_bytes_buff, 0, sizeof(header_frame_format_t));
+			// the type of frame we get will dictate what the next state should be
+			if (header_receivedFrame.start_of_frame == BL_ELEMENT_START_OF_FRAME && header_receivedFrame.end_of_frame == BL_ELEMENT_END_OF_FRAME)
+			{
+				debug_print("valid header received\r\n");
+				// TODO: check CRC
+				// if frame is valid
+				return true;
+			}
+			else
+			{
+				debug_print("invalide header\r\n");
+			}
+
 		}
 	}
+
 	return false;
 }
 //-------------------------------------------------------------------
