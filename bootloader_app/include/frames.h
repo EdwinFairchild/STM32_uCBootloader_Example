@@ -11,17 +11,17 @@
  */
 
 //delimeters
-#define BL_START_OF_FRAME  0x45444459 //EDDY 
-#define BL_END_OF_FRAME    0x46414952 //FAIR 
+#define BL_ELEMENT_START_OF_FRAME  0x45444459 //EDDY 
+#define BL_ELEMENT_END_OF_FRAME    0x46414952 //FAIR 
 
 //frame IDS
-#define BL_HEADER       0xFEEDEDDE //sends info about firmware: size , version 
-#define BL_STATUS_CHECK 0x4b4b4b4b
-#define BL_START_UPDATE 0xBA5EBA11
-#define BL_PAYLOAD      0xDEADBEEF
-#define BL_UPDATE_DONE  0xDEADDADE
-#define BL_ACK_FRAME    0x45634AED
-#define BL_NACK_FRAME   0x43636AEA
+#define BL_FRAME_ID_HEADER       0xFEEDEDDE //sends info about firmware: size , version 
+#define BL_FRAME_ID_STATUS_CHECK 0x4b4b4b4b
+#define BL_FRAME_ID_START_UPDATE 0xBA5EBA11
+#define BL_FRAME_ID_PAYLOAD      0xDEADBEEF
+#define BL_FRAME_ID_UPDATE_DONE  0xDEADDADE
+#define BL_FRAME_ID_ACK_FRAME    0x45634AED
+#define BL_FRAME_ID_NACK_FRAME   0x43636AEA
 #define PAYLOAD_LEN 16
 
 //frame formated struct
@@ -56,9 +56,9 @@ typedef struct __attribute__((packed))
 //states
 typedef enum bootloader_state
 {
-    STATE_IDLE = 0,
-    STATE_START_UPDATE,
-    STATE_UPDATING,
+    BL_STATE_IDLE = 0,
+    BL_STATE_START_UPDATE,
+    BL_STATE_UPDATING,
 }bootloader_state ; 
 
 typedef enum

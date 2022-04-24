@@ -1,13 +1,16 @@
 #include "bootloader.h"
 #include "frames.h"
-//location of reset handler for user_app
-#define USER_APP_LOCATION (0x8020000 + 4)
-//#define DEBUG_ENABLED 1
+
+//---------------| Debug switch |----------------
+#define DEBUG_ENABLED 1
 #ifdef DEBUG_ENABLED 
 #define debug_print(x) print(x)
 #else
 #define debug_print(...) ((void)0)
 #endif
+
+//location of reset handler for user_app
+#define USER_APP_LOCATION (0x8020000 + 4)
 uint32_t start_address = 0x8020000;
 
 static bool valid_header = false;
@@ -16,8 +19,8 @@ uint8_t bytes_buff[sizeof(frame_format_t)] = {0};
 frame_format_t receivedFrame; 
 frame_format_t ackFrame;
 frame_format_t nackFrame;
+bootloader_state bootloader_current_state = BL_STATE_IDLE;
 
-bootloader_state bootloader_current_state = STATE_IDLE;
 //-----------------------| prototypes |-----------------------
 static void print(char *msg, ...);
 static void jump_to_user_app(void);
@@ -39,14 +42,14 @@ void bootloader_main(void)
 
 	bootloaderInit();
 	uint32_t timeNow = HAL_GetTick(); //current timestamp
-	bootloader_state_functions[STATE_IDLE] = idle_state_func;
+	bootloader_state_functions[BL_STATE_IDLE] = idle_state_func;
 	//bootloader_state_functions[STATE_START_UPDATE] = start_update_state_func;
-	bootloader_state_functions[STATE_UPDATING] = updating_state_func;
+	bootloader_state_functions[BL_STATE_UPDATING] = updating_state_func;
 
 	while(1)
 	{
 		(*bootloader_state_functions[bootloader_current_state])();
-        if(((HAL_GetTick() - timeNow) > 15000) && (bootloader_current_state == STATE_IDLE))
+        if(((HAL_GetTick() - timeNow) > 15000) && (bootloader_current_state == BL_STATE_IDLE))
         {
         	jump_to_user_app();
         }
@@ -58,22 +61,22 @@ void bootloaderInit(void)
 {
 	debug_print("Bootloader init\r\n");
 	// create the ACK frame
-	ackFrame.start_of_frame = BL_START_OF_FRAME;
-	ackFrame.frame_id = BL_ACK_FRAME;
+	ackFrame.start_of_frame = BL_ELEMENT_START_OF_FRAME;
+	ackFrame.frame_id = BL_FRAME_ID_ACK_FRAME;
 	ackFrame.payload_len = (uint16_t)65535;
 	ackFrame.crc32 = 0xffffffff; // TODO:
-	ackFrame.end_of_frame = BL_END_OF_FRAME;
+	ackFrame.end_of_frame = BL_ELEMENT_END_OF_FRAME;
 	for (int i = 0; i < PAYLOAD_LEN; i++)
 	{
 		ackFrame.payload[i] = i;
 	}
 
 	// create the NACK frame
-	nackFrame.start_of_frame = BL_START_OF_FRAME;
-	nackFrame.frame_id = 0x45634AED;
+	nackFrame.start_of_frame = BL_ELEMENT_START_OF_FRAME;
+	nackFrame.frame_id = BL_FRAME_ID_NACK_FRAME;
 	nackFrame.payload_len = (uint16_t)65535;
 	nackFrame.crc32 = 0xffffffff; // TODO:
-	nackFrame.end_of_frame = BL_END_OF_FRAME;
+	nackFrame.end_of_frame = BL_ELEMENT_END_OF_FRAME;
 	for (int i = 0; i < PAYLOAD_LEN; i++)
 	{
 		nackFrame.payload[i] = i;
@@ -88,15 +91,15 @@ frame_format_t idle_state_func(void)
 
 		switch (receivedFrame.frame_id)
 		{
-		case BL_START_UPDATE:
-			set_bl_state(STATE_UPDATING);
+		case BL_FRAME_ID_START_UPDATE:
+			set_bl_state(BL_STATE_UPDATING);
 			reset_recevied_frame();
 			sendFrame(&ackFrame);
 			break;
 
 		// only states above are valid to switch out of idle state
 		default:
-			set_bl_state(STATE_IDLE);
+			set_bl_state(BL_STATE_IDLE);
 			reset_recevied_frame();
 		}
 	}
@@ -111,7 +114,7 @@ frame_format_t updating_state_func(void)
 	static bool erased = false;
 	if (parse_frame())
 	{
-		if (receivedFrame.frame_id == BL_PAYLOAD)
+		if (receivedFrame.frame_id == BL_FRAME_ID_PAYLOAD)
 		{
 			if (!erased) // only do this once
 			{
@@ -124,7 +127,7 @@ frame_format_t updating_state_func(void)
 			// send ack frame
 			sendFrame(&ackFrame);
 		}
-		else if (receivedFrame.frame_id == BL_UPDATE_DONE)
+		else if (receivedFrame.frame_id == BL_FRAME_ID_UPDATE_DONE)
 		{
 			jump_to_user_app();
 		}
@@ -276,7 +279,7 @@ static bool parse_frame(void)
 		// clear bytes buffer
 		memset(bytes_buff, 0, sizeof(frame_format_t));
 		// the type of frame we get will dictate what the next state should be
-		if (receivedFrame.start_of_frame == BL_START_OF_FRAME && receivedFrame.end_of_frame == BL_END_OF_FRAME)
+		if (receivedFrame.start_of_frame == BL_ELEMENT_START_OF_FRAME && receivedFrame.end_of_frame == BL_ELEMENT_END_OF_FRAME)
 		{
 			// TODO: check CRC
 			// if frame is valid
