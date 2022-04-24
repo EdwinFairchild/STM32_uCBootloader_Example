@@ -104,33 +104,26 @@ void bootloaderInit(void)
 //-------------------------------------------------------------------
 frame_format_t idle_state_func(void)
 {
-
+	//idle state only listens for header frame
 	if (parse_frame())
 	{
 		debug_print("Parse == true\r\n");
 		switch (header_receivedFrame.frame_id)
 		{
 			case BL_FRAME_ID_HEADER :
-             
-			//TODO validate header
-			//validate_header();
-			valid_header = true;
-			debug_print("Switching to bootloader state\r\n");
-			set_bl_state(BL_STATE_BOOTLOADER);
-			reset_header_frame();
-			sendFrame(&ackFrame);
+				//TODO validate header
+				//validate_header();
+				valid_header = true;
+				debug_print("Switching to bootloader state\r\n");
+				set_bl_state(BL_STATE_BOOTLOADER);
+				reset_header_frame();
+				sendFrame(&ackFrame);
 			break;
 
-			case BL_FRAME_ID_START_UPDATE:
-				set_bl_state(BL_STATE_UPDATING);
+			default:
+				set_bl_state(BL_STATE_IDLE);
 				reset_recevied_frame();
-				sendFrame(&ackFrame);
-				break;
-
-		// only states above are valid to switch out of idle state
-		default:
-			set_bl_state(BL_STATE_IDLE);
-			reset_recevied_frame();
+			break;
 		}
 	}
 	//return (frame_format_t)0;
@@ -308,6 +301,7 @@ void bootloader_USART2_callback(uint8_t data)
 	if(valid_header == false)//listen for valid header
 	{
 		//TODO: this if and else code is redundant , fix later 
+		//use pointers just like functon below
 		// fill buffer until we have enough bytes to assemble a frame
 		if (bytes_received_count <= sizeof(header_frame_format_t))
 		{
@@ -348,20 +342,24 @@ static bool parse_frame(void)
 	//parse variable will have been set in UART callback
 	//code below not test
 	// void *receviedFrame_PTR =  NULL;
+	// void *buff_PTR = NULL;
 	// uint8_t len = 0;
 	// if(valid_header)
 	// {
+	// 	//configures pointers to point ot regular frame objects
 	// 	receviedFrame_PTR = &receivedFrame;
+	// 	buff_PTR = bytes_buff;
 	// 	len = sizeof(frame_format_t);
 	// }
 	// else
 	// {
+	// 	//configure pointers to point to header objects
 	// 	receviedFrame_PTR = &header_receivedFrame;
+	// 	buff_PTR = header_bytes_buff;
 	// 	len = sizeof(header_frame_format_t);
 	// }
 	if (parse)
 	{
-
 		parse = false;
 		//if we already have a valid header then we are parsing regualr frames
 		if(valid_header)
