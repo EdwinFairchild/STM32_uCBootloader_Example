@@ -66,7 +66,7 @@ void bootloaderInit(void)
 	ackFrame.payload_len = (uint16_t)65535;
 	ackFrame.crc32 = 0xffffffff; // TODO:
 	ackFrame.end_of_frame = BL_ELEMENT_END_OF_FRAME;
-	for (int i = 0; i < PAYLOAD_LEN; i++)
+	for (int i = 0; i < BL_PAYLOAD_LEN; i++)
 	{
 		ackFrame.payload[i] = i;
 	}
@@ -77,7 +77,7 @@ void bootloaderInit(void)
 	nackFrame.payload_len = (uint16_t)65535;
 	nackFrame.crc32 = 0xffffffff; // TODO:
 	nackFrame.end_of_frame = BL_ELEMENT_END_OF_FRAME;
-	for (int i = 0; i < PAYLOAD_LEN; i++)
+	for (int i = 0; i < BL_PAYLOAD_LEN; i++)
 	{
 		nackFrame.payload[i] = i;
 	}

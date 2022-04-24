@@ -39,9 +39,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_line   0000d967  00000000  00000000  00054232  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000c96c5  00000000  00000000  00061b99  2**0
+ 18 .debug_str    000c96c8  00000000  00000000  00061b99  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  0012b25e  2**0
+ 19 .comment      00000053  00000000  00000000  0012b261  2**0
                   CONTENTS, READONLY
  20 .debug_frame  00002958  00000000  00000000  0012b2b4  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -7817,7 +7817,7 @@ void bootloaderInit(void)
  8003168:	2200      	movs	r2, #0
  800316a:	f042 0246 	orr.w	r2, r2, #70	; 0x46
  800316e:	f883 2021 	strb.w	r2, [r3, #33]	; 0x21
-	for (int i = 0; i < PAYLOAD_LEN; i++)
+	for (int i = 0; i < BL_PAYLOAD_LEN; i++)
  8003172:	2300      	movs	r3, #0
  8003174:	607b      	str	r3, [r7, #4]
  8003176:	e00a      	b.n	800318e <bootloaderInit+0xba>
@@ -7831,7 +7831,7 @@ void bootloaderInit(void)
  8003182:	330a      	adds	r3, #10
  8003184:	460a      	mov	r2, r1
  8003186:	701a      	strb	r2, [r3, #0]
-	for (int i = 0; i < PAYLOAD_LEN; i++)
+	for (int i = 0; i < BL_PAYLOAD_LEN; i++)
  8003188:	687b      	ldr	r3, [r7, #4]
  800318a:	3301      	adds	r3, #1
  800318c:	607b      	str	r3, [r7, #4]
@@ -7899,7 +7899,7 @@ void bootloaderInit(void)
  800321c:	2200      	movs	r2, #0
  800321e:	f042 0246 	orr.w	r2, r2, #70	; 0x46
  8003222:	f883 2021 	strb.w	r2, [r3, #33]	; 0x21
-	for (int i = 0; i < PAYLOAD_LEN; i++)
+	for (int i = 0; i < BL_PAYLOAD_LEN; i++)
  8003226:	2300      	movs	r3, #0
  8003228:	603b      	str	r3, [r7, #0]
  800322a:	e00a      	b.n	8003242 <bootloaderInit+0x16e>
@@ -7913,7 +7913,7 @@ void bootloaderInit(void)
  8003236:	330a      	adds	r3, #10
  8003238:	460a      	mov	r2, r1
  800323a:	701a      	strb	r2, [r3, #0]
-	for (int i = 0; i < PAYLOAD_LEN; i++)
+	for (int i = 0; i < BL_PAYLOAD_LEN; i++)
  800323c:	683b      	ldr	r3, [r7, #0]
  800323e:	3301      	adds	r3, #1
  8003240:	603b      	str	r3, [r7, #0]

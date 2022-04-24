@@ -22,7 +22,7 @@
 #define BL_FRAME_ID_UPDATE_DONE  0xDEADDADE
 #define BL_FRAME_ID_ACK_FRAME    0x45634AED
 #define BL_FRAME_ID_NACK_FRAME   0x43636AEA
-#define PAYLOAD_LEN 16
+#define BL_PAYLOAD_LEN 16
 
 //frame formated struct
 typedef struct __attribute__((packed))
@@ -30,7 +30,7 @@ typedef struct __attribute__((packed))
     uint32_t start_of_frame;
     uint32_t frame_id;
     uint16_t payload_len;
-    uint8_t payload[PAYLOAD_LEN];
+    uint8_t payload[BL_PAYLOAD_LEN];
     uint32_t crc32; 
     uint32_t  end_of_frame;
 
