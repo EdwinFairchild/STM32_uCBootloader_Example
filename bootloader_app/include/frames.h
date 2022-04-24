@@ -38,6 +38,20 @@ typedef struct __attribute__((packed))
 
 //TODO: struct to configure bootloader
 
+//header frame 
+typedef struct __attribute__((packed))
+{
+    uint32_t start_of_frame;
+    uint32_t frame_id;
+    uint32_t magicNumber;
+    uint32_t image_checksum;
+    uint32_t firmware_version; 
+    uint32_t imageSize;
+    uint32_t jumpValue;
+    uint32_t crc32; 
+    uint32_t end_of_frame;
+
+}header_frame_format_t;
 
 //states
 typedef enum bootloader_state

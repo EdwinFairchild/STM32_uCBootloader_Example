@@ -4,8 +4,8 @@
 #define USER_APP_LOCATION (0x8020000 + 4)
 uint32_t start_address = 0x8020000;
 
-
-bool parse = false;
+static bool valid_header = false;
+static bool parse = false;
 uint8_t bytes_buff[sizeof(frame_format_t)] = {0};
 frame_format_t receivedFrame; 
 frame_format_t ackFrame;
@@ -28,8 +28,9 @@ static void write_payload(void);
 //-------------------------------------------------------------------
 void bootloader_main(void)
 {
-	// TODO: fix :enable RX interrupt
+	// TODO: abstract :enable RX interrupt
 	USART2->CR1 |= USART_CR1_RXNEIE;
+
 	bootloaderInit();
 	uint32_t timeNow = HAL_GetTick(); //current timestamp
 	bootloader_state_functions[STATE_IDLE] = idle_state_func;
@@ -49,6 +50,7 @@ void bootloader_main(void)
 //-------------------------------------------------------------------
 void bootloaderInit(void)
 {
+	print("Bootloader init\r\n");
 	// create the ACK frame
 	ackFrame.start_of_frame = BL_START_OF_FRAME;
 	ackFrame.frame_id = BL_ACK_FRAME;
@@ -70,6 +72,7 @@ void bootloaderInit(void)
 	{
 		nackFrame.payload[i] = i;
 	}
+	print("Ack / Nack frames created \r\n");
 }
 //-------------------------------------------------------------------
 frame_format_t idle_state_func(void)
@@ -177,12 +180,12 @@ static void print(char *msg, ...)
 
 	for (int i = 0; i < strlen(buff); i++)
 	{
-		USART2->DR = buff[i];
-		while (!(USART2->SR & USART_SR_TXE))
+		USART3->DR = buff[i];
+		while (!(USART3->SR & USART_SR_TXE))
 			;
 	}
 
-	while (!(USART2->SR & USART_SR_TC))
+	while (!(USART3->SR & USART_SR_TC))
 		;
 }
 //-------------------------------------------------------------------
@@ -224,17 +227,30 @@ static void sendFrame(frame_format_t *frame)
 //-------------------------------------------------------------------
 void bootloader_USART2_callback(uint8_t data)
 {
+
+	//should first only listen for a header : header_frame_format_t
+	//once ehader is received then it can listen for frames : frame_format_t
 	static uint8_t bytes_received_count = 0;
 	// filll buffer until we have enough bytes to assemble a frame
-	if (bytes_received_count <= sizeof(frame_format_t))
+	if(valid_header != true)
 	{
-		bytes_buff[bytes_received_count++] = data;
-		if (bytes_received_count == sizeof(frame_format_t))
+		//keep lsitneing for valid header
+		if (bytes_received_count <= sizeof(header_frame_format_t))
 		{
-
-			bytes_received_count = 0;
-			parse = true;
 		}
+	}
+	else
+	{
+		if (bytes_received_count <= sizeof(frame_format_t))
+		{
+			bytes_buff[bytes_received_count++] = data;
+			if (bytes_received_count == sizeof(frame_format_t))
+			{
+
+				bytes_received_count = 0;
+				parse = true;
+			}
+		}		
 	}
 }
 //-------------------------------------------------------------------
